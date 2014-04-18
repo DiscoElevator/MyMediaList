@@ -12,7 +12,7 @@ public interface ListDAO {
 
 	List<ListItem> getByTypeAndStatus(MediaType type, MediaStatus status);
 
-	void saveItem(ListItem item);
+	ListItem saveItem(ListItem item);
 
-	void saveItems(List<ListItem> items);
+	List<ListItem> saveItems(List<ListItem> items);
 }

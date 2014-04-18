@@ -2,6 +2,7 @@ package ru.tumas.mymedialist.list;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,11 +16,11 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Items")
 @NamedQueries({
-	@NamedQuery(name = "ListItem.getAll", query = "SELECT i FROM Items i"),
-	@NamedQuery(name = "ListItem.getByStatus", query = "SELECT i FROM Items i WHERE i.status = :status"),
-	@NamedQuery(name = "ListItem.getByType", query = "SELECT i FROM Items i WHERE i.type = :type"),
-	@NamedQuery(name = "ListItem.getByTypeAndStatus", query = "SELECT i FROM Items i WHERE i.status = :status"
-			+ "AND i.status = :status")
+	@NamedQuery(name = "ListItem.getAll", query = "SELECT i FROM ListItem i"),
+	@NamedQuery(name = "ListItem.getByStatus", query = "SELECT i FROM ListItem i WHERE i.status = :status"),
+	@NamedQuery(name = "ListItem.getByType", query = "SELECT i FROM ListItem i WHERE i.type = :type"),
+	@NamedQuery(name = "ListItem.getByTypeAndStatus", query = "SELECT i FROM ListItem i WHERE i.type = :type"
+			+ " AND i.status = :status")
 })
 public class ListItem implements Serializable {
 
@@ -125,5 +126,27 @@ public class ListItem implements Serializable {
 
 	public void setStatus(MediaStatus status) {
 		this.status = status;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 31 * hash + Objects.hashCode(this.id);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ListItem other = (ListItem) obj;
+		if (!Objects.equals(this.id, other.id)) {
+			return false;
+		}
+		return true;
 	}
 }

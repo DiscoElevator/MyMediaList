@@ -1,6 +1,7 @@
 package ru.tumas.mymedialist.list;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -62,36 +63,31 @@ public class ListDAOImpl implements ListDAO {
 	}
 
 	@Override
-	public void saveItem(ListItem item) {
+	public ListItem saveItem(ListItem item) {
 		if (item == null) {
-			return;
+			return null;
 		}
 		EntityManager em = entityManagerFactory.createEntityManager();
-		ListItem oldItem = em.find(ListItem.class, item.getId());
-		if (oldItem != null) {
-			em.merge(item);
-		} else {
-			em.persist(item);
-		}
-		em.flush();
+		em.getTransaction().begin();
+		ListItem result = em.merge(item);
+		em.getTransaction().commit();
 		em.close();
+		return result;
 	}
 
 	@Override
-	public void saveItems(List<ListItem> items) {
+	public List<ListItem> saveItems(List<ListItem> items) {
 		if ((items == null) || items.isEmpty()) {
-			return;
+			return null;
 		}
+		List<ListItem> result = new LinkedList<>();
 		EntityManager em = entityManagerFactory.createEntityManager();
+		em.getTransaction().begin();
 		for (ListItem item : items) {
-			ListItem oldItem = em.find(ListItem.class, item.getId());
-			if (oldItem != null) {
-				em.merge(item);
-			} else {
-				em.persist(item);
-			}
-			em.flush();
+			result.add(em.merge(item));
 		}
+		em.getTransaction().commit();
 		em.close();
+		return result;
 	}
 }
