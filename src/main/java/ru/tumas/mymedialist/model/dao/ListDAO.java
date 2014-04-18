@@ -14,9 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.tumas.mymedialist.model;
+package ru.tumas.mymedialist.model.dao;
 
-public enum MediaStatus {
+import java.util.List;
+import ru.tumas.mymedialist.model.ListItem;
+import ru.tumas.mymedialist.model.MediaStatus;
+import ru.tumas.mymedialist.model.MediaType;
 
-	PLAN_TO_WATCH, WATCHING, COMPLETED, DROPPED
+public interface ListDAO {
+
+	List<ListItem> getAll();
+
+	List<ListItem> getByStatus(MediaStatus status);
+
+	List<ListItem> getByType(MediaType type);
+
+	List<ListItem> getByTypeAndStatus(MediaType type, MediaStatus status);
+
+	ListItem saveItem(ListItem item);
+
+	List<ListItem> saveItems(List<ListItem> items);
 }
