@@ -1,5 +1,9 @@
-package ru.tumas.mymedialist.list;
+package ru.tumas.mymedialist.model;
 
+import ru.tumas.mymedialist.model.MediaType;
+import ru.tumas.mymedialist.model.ListDAOImpl;
+import ru.tumas.mymedialist.model.ListItem;
+import ru.tumas.mymedialist.model.MediaStatus;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;

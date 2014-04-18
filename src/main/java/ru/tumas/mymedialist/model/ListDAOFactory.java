@@ -1,4 +1,4 @@
-package ru.tumas.mymedialist.list;
+package ru.tumas.mymedialist.model;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
