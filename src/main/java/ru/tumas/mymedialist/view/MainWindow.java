@@ -21,6 +21,7 @@ import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
+import com.alee.laf.toolbar.WebToolBar;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
@@ -39,7 +40,7 @@ public class MainWindow extends JFrame {
 		this.setTitle(settings.getLocalizedString("mainWindow.title"));
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-		GroupPanel groupPanel = new GroupPanel(createMenu(), new GroupPanel(), createStatusBar());
+		GroupPanel groupPanel = new GroupPanel(createMenu(), createToolbar(), new GroupPanel(), createStatusBar());
 		groupPanel.setOrientation(SwingConstants.VERTICAL);
 		this.add(groupPanel);
 	}
@@ -56,6 +57,12 @@ public class MainWindow extends JFrame {
 
 	private WebStatusBar createStatusBar() {
 		WebStatusBar result = new WebStatusBar();
+		return result;
+	}
+	
+	private WebToolBar createToolbar() {
+		WebToolBar result =  new WebToolBar(WebToolBar.HORIZONTAL);
+		result.setFloatable(false);
 		return result;
 	}
 }
