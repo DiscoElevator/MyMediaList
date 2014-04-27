@@ -18,20 +18,21 @@ package ru.tumas.mymedialist.view;
 
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.statusbar.WebStatusBar;
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
+import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.toolbar.WebToolBar;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import javax.swing.JFrame;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import ru.tumas.mymedialist.model.AppSettings;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends WebFrame {
 
-	private static final int MIN_WIDTH = 300;
-	private static final int MIN_HEIGHT = 300;
+	private static final int MIN_WIDTH = 800;
+	private static final int MIN_HEIGHT = 500;
 	private final AppSettings settings;
 
 	public MainWindow() {
@@ -39,10 +40,11 @@ public class MainWindow extends JFrame {
 		settings = AppSettings.getInstance();
 		this.setTitle(settings.getLocalizedString("mainWindow.title"));
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-		GroupPanel groupPanel = new GroupPanel(createMenu(), createToolbar(), new GroupPanel(), createStatusBar());
-		groupPanel.setOrientation(SwingConstants.VERTICAL);
-		this.add(groupPanel);
+		this.setSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
+		this.setLayout(new BorderLayout());
+		this.getContentPane().add(new GroupPanel(false, createMenu(), createToolbar()), BorderLayout.NORTH);
+		this.getContentPane().add(new CenterPanel(), BorderLayout.CENTER);
+		this.getContentPane().add(createStatusBar(), BorderLayout.SOUTH);
 	}
 
 	private WebMenuBar createMenu() {
@@ -57,11 +59,12 @@ public class MainWindow extends JFrame {
 
 	private WebStatusBar createStatusBar() {
 		WebStatusBar result = new WebStatusBar();
+		result.add(new WebLabel("test"));
 		return result;
 	}
-	
+
 	private WebToolBar createToolbar() {
-		WebToolBar result =  new WebToolBar(WebToolBar.HORIZONTAL);
+		WebToolBar result = new WebToolBar(WebToolBar.HORIZONTAL);
 		result.setFloatable(false);
 		return result;
 	}
