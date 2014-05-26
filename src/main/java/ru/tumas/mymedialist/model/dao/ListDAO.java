@@ -17,21 +17,21 @@
 package ru.tumas.mymedialist.model.dao;
 
 import java.util.List;
-import ru.tumas.mymedialist.model.ListItem;
+import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 
 public interface ListDAO {
 
-	List<ListItem> getAll();
+	List<MediaListItem> getAll();
 
-	List<ListItem> getByStatus(MediaStatus status);
+	List<MediaListItem> getByStatus(MediaStatus status);
 
-	List<ListItem> getByType(MediaType type);
+	List<MediaListItem> getByType(MediaType type);
 
-	List<ListItem> getByTypeAndStatus(MediaType type, MediaStatus status);
+	List<MediaListItem> getByTypeAndStatus(MediaType type, MediaStatus status);
 
-	ListItem saveItem(ListItem item);
+	MediaListItem saveItem(MediaListItem item);
 
-	List<ListItem> saveItems(List<ListItem> items);
+	List<MediaListItem> saveItems(List<MediaListItem> items);
 }

@@ -32,13 +32,13 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Items")
 @NamedQueries({
-	@NamedQuery(name = "ListItem.getAll", query = "SELECT i FROM ListItem i"),
-	@NamedQuery(name = "ListItem.getByStatus", query = "SELECT i FROM ListItem i WHERE i.status = :status"),
-	@NamedQuery(name = "ListItem.getByType", query = "SELECT i FROM ListItem i WHERE i.type = :type"),
-	@NamedQuery(name = "ListItem.getByTypeAndStatus", query = "SELECT i FROM ListItem i WHERE i.type = :type"
+	@NamedQuery(name = "MediaListItem.getAll", query = "SELECT i FROM MediaListItem i"),
+	@NamedQuery(name = "MediaListItem.getByStatus", query = "SELECT i FROM MediaListItem i WHERE i.status = :status"),
+	@NamedQuery(name = "MediaListItem.getByType", query = "SELECT i FROM MediaListItem i WHERE i.type = :type"),
+	@NamedQuery(name = "MediaListItem.getByTypeAndStatus", query = "SELECT i FROM MediaListItem i WHERE i.type = :type"
 			+ " AND i.status = :status")
 })
-public class ListItem implements Serializable {
+public class MediaListItem implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -159,7 +159,7 @@ public class ListItem implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final ListItem other = (ListItem) obj;
+		final MediaListItem other = (MediaListItem) obj;
 		if (!Objects.equals(this.id, other.id)) {
 			return false;
 		}

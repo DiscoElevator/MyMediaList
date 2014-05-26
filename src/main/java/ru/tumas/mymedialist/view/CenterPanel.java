@@ -47,7 +47,7 @@ public class CenterPanel extends WebSplitPane {
 
 		WebTree tree = new WebTree(root);
 		tree.setMultiplySelectionAllowed(false);
-		tree.setAutoExpandSelectedNode(true);
+//		tree.setAutoExpandSelectedNode(true);
 		return tree;
 	}
 

@@ -23,7 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
-import ru.tumas.mymedialist.model.ListItem;
+import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 
@@ -43,66 +43,66 @@ public class ListDAOImpl implements ListDAO {
 	}
 
 	@Override
-	public List<ListItem> getAll() {
+	public List<MediaListItem> getAll() {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		List<ListItem> items = em.createNamedQuery("ListItem.getAll", ListItem.class).getResultList();
+		List<MediaListItem> items = em.createNamedQuery("ListItem.getAll", MediaListItem.class).getResultList();
 		em.close();
 		return Collections.unmodifiableList(items);
 	}
 
 	@Override
-	public List<ListItem> getByStatus(MediaStatus status) {
+	public List<MediaListItem> getByStatus(MediaStatus status) {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		TypedQuery<ListItem> query = em.createNamedQuery("ListItem.getByStatus", ListItem.class);
+		TypedQuery<MediaListItem> query = em.createNamedQuery("ListItem.getByStatus", MediaListItem.class);
 		query.setParameter("status", status);
-		List<ListItem> items = query.getResultList();
+		List<MediaListItem> items = query.getResultList();
 		em.close();
 		return Collections.unmodifiableList(items);
 	}
 
 	@Override
-	public List<ListItem> getByType(MediaType type) {
+	public List<MediaListItem> getByType(MediaType type) {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		TypedQuery<ListItem> query = em.createNamedQuery("ListItem.getByType", ListItem.class);
+		TypedQuery<MediaListItem> query = em.createNamedQuery("ListItem.getByType", MediaListItem.class);
 		query.setParameter("type", type);
-		List<ListItem> items = query.getResultList();
+		List<MediaListItem> items = query.getResultList();
 		em.close();
 		return Collections.unmodifiableList(items);
 	}
 
 	@Override
-	public List<ListItem> getByTypeAndStatus(MediaType type, MediaStatus status) {
+	public List<MediaListItem> getByTypeAndStatus(MediaType type, MediaStatus status) {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		TypedQuery<ListItem> query = em.createNamedQuery("ListItem.getByTypeAndStatus", ListItem.class);
+		TypedQuery<MediaListItem> query = em.createNamedQuery("ListItem.getByTypeAndStatus", MediaListItem.class);
 		query.setParameter("type", type);
 		query.setParameter("status", status);
-		List<ListItem> items = query.getResultList();
+		List<MediaListItem> items = query.getResultList();
 		em.close();
 		return Collections.unmodifiableList(items);
 	}
 
 	@Override
-	public ListItem saveItem(ListItem item) {
+	public MediaListItem saveItem(MediaListItem item) {
 		if (item == null) {
 			return null;
 		}
 		EntityManager em = entityManagerFactory.createEntityManager();
 		em.getTransaction().begin();
-		ListItem result = em.merge(item);
+		MediaListItem result = em.merge(item);
 		em.getTransaction().commit();
 		em.close();
 		return result;
 	}
 
 	@Override
-	public List<ListItem> saveItems(List<ListItem> items) {
+	public List<MediaListItem> saveItems(List<MediaListItem> items) {
 		if ((items == null) || items.isEmpty()) {
 			return null;
 		}
-		List<ListItem> result = new LinkedList<>();
+		List<MediaListItem> result = new LinkedList<>();
 		EntityManager em = entityManagerFactory.createEntityManager();
 		em.getTransaction().begin();
-		for (ListItem item : items) {
+		for (MediaListItem item : items) {
 			result.add(em.merge(item));
 		}
 		em.getTransaction().commit();
