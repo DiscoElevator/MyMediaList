@@ -16,11 +16,11 @@
  */
 package ru.tumas.mymedialist.view;
 
-import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tree.WebTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import ru.tumas.mymedialist.model.MediaListModel;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 
@@ -33,7 +33,7 @@ public class CenterPanel extends WebSplitPane {
 	public CenterPanel() {
 		super(HORIZONTAL_SPLIT);
 		WebScrollPane leftScrollPane = new WebScrollPane(createTree());
-		WebScrollPane rightScrollPane = new WebScrollPane(createRightPanel());
+		WebScrollPane rightScrollPane = new WebScrollPane(new MediaListPanel());
 		this.setLeftComponent(leftScrollPane);
 		this.setRightComponent(rightScrollPane);
 	}
@@ -48,6 +48,7 @@ public class CenterPanel extends WebSplitPane {
 		WebTree tree = new WebTree(root);
 		tree.setMultiplySelectionAllowed(false);
 //		tree.setAutoExpandSelectedNode(true);
+		tree.addTreeSelectionListener(new TreeNodeSelectionListener(this));
 		return tree;
 	}
 
@@ -60,7 +61,7 @@ public class CenterPanel extends WebSplitPane {
 		return result;
 	}
 
-	private GroupPanel createRightPanel() {
-		return new GroupPanel();
+	public void createRightPanel(MediaListModel model) {
+		this.setRightComponent(new WebScrollPane(new MediaListPanel(model)));
 	}
 }

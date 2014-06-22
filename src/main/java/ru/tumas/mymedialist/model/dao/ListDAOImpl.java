@@ -21,7 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
@@ -30,10 +29,6 @@ import ru.tumas.mymedialist.model.MediaType;
 public class ListDAOImpl implements ListDAO {
 
 	private final EntityManagerFactory entityManagerFactory;
-
-	public ListDAOImpl() {
-		entityManagerFactory = Persistence.createEntityManagerFactory("ru.tumas_MyMediaList_jar_0.0.1PU");
-	}
 
 	public ListDAOImpl(EntityManagerFactory entityManagerFactory) {
 		if (entityManagerFactory == null) {
@@ -45,7 +40,7 @@ public class ListDAOImpl implements ListDAO {
 	@Override
 	public List<MediaListItem> getAll() {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		List<MediaListItem> items = em.createNamedQuery("ListItem.getAll", MediaListItem.class).getResultList();
+		List<MediaListItem> items = em.createNamedQuery("MediaListItem.getAll", MediaListItem.class).getResultList();
 		em.close();
 		return Collections.unmodifiableList(items);
 	}
@@ -53,7 +48,7 @@ public class ListDAOImpl implements ListDAO {
 	@Override
 	public List<MediaListItem> getByStatus(MediaStatus status) {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		TypedQuery<MediaListItem> query = em.createNamedQuery("ListItem.getByStatus", MediaListItem.class);
+		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByStatus", MediaListItem.class);
 		query.setParameter("status", status);
 		List<MediaListItem> items = query.getResultList();
 		em.close();
@@ -63,7 +58,7 @@ public class ListDAOImpl implements ListDAO {
 	@Override
 	public List<MediaListItem> getByType(MediaType type) {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		TypedQuery<MediaListItem> query = em.createNamedQuery("ListItem.getByType", MediaListItem.class);
+		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByType", MediaListItem.class);
 		query.setParameter("type", type);
 		List<MediaListItem> items = query.getResultList();
 		em.close();
@@ -73,7 +68,7 @@ public class ListDAOImpl implements ListDAO {
 	@Override
 	public List<MediaListItem> getByTypeAndStatus(MediaType type, MediaStatus status) {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		TypedQuery<MediaListItem> query = em.createNamedQuery("ListItem.getByTypeAndStatus", MediaListItem.class);
+		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByTypeAndStatus", MediaListItem.class);
 		query.setParameter("type", type);
 		query.setParameter("status", status);
 		List<MediaListItem> items = query.getResultList();

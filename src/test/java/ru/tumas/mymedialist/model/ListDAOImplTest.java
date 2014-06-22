@@ -38,7 +38,7 @@ public class ListDAOImplTest {
 		entityManagerFactory = Persistence.createEntityManagerFactory("ru.tumas_MyMediaList_jar_0.0.1PU", props);
 		EntityManager em = entityManagerFactory.createEntityManager();
 		em.getTransaction().begin();
-		Query q1 = em.createQuery("DELETE FROM ListItem");
+		Query q1 = em.createQuery("DELETE FROM MediaListItem");
 		q1.executeUpdate();
 		em.getTransaction().commit();
 		em.close();

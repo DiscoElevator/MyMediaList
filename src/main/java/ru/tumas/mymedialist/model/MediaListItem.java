@@ -143,11 +143,36 @@ public class MediaListItem implements Serializable {
 	public void setStatus(MediaStatus status) {
 		this.status = status;
 	}
+	
+	
+
+//	@Override
+//	public int hashCode() {
+//		int hash = 7;
+//		hash = 31 * hash + Objects.hashCode(this.id);
+//		return hash;
+//	}
+//
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (obj == null) {
+//			return false;
+//		}
+//		if (getClass() != obj.getClass()) {
+//			return false;
+//		}
+//		final MediaListItem other = (MediaListItem) obj;
+//		if (!Objects.equals(this.id, other.id)) {
+//			return false;
+//		}
+//		return true;
+//	}
 
 	@Override
 	public int hashCode() {
-		int hash = 7;
-		hash = 31 * hash + Objects.hashCode(this.id);
+		int hash = 5;
+		hash = 19 * hash + Objects.hashCode(this.id);
+		hash = 19 * hash + Objects.hashCode(this.nameEng);
 		return hash;
 	}
 
@@ -161,6 +186,9 @@ public class MediaListItem implements Serializable {
 		}
 		final MediaListItem other = (MediaListItem) obj;
 		if (!Objects.equals(this.id, other.id)) {
+			return false;
+		}
+		if (!Objects.equals(this.nameEng, other.nameEng)) {
 			return false;
 		}
 		return true;
