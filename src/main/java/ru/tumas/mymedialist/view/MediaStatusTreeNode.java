@@ -56,6 +56,6 @@ public class MediaStatusTreeNode extends DefaultMutableTreeNode {
 
 	@Override
 	public String toString() {
-		return AppSettings.getInstance().getLocalizedString(mediaStatusNames.get(mediaStatus));
+		return AppSettings.getLocalizedString(mediaStatusNames.get(mediaStatus));
 	}
 }

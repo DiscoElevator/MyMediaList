@@ -33,12 +33,10 @@ public class MainWindow extends WebFrame {
 
 	private static final int MIN_WIDTH = 800;
 	private static final int MIN_HEIGHT = 500;
-	private final AppSettings settings;
 
 	public MainWindow() {
 		super();
-		settings = AppSettings.getInstance();
-		this.setTitle(settings.getLocalizedString("mainWindow.title"));
+		this.setTitle(AppSettings.getLocalizedString("mainWindow.title"));
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		this.setLayout(new BorderLayout());
@@ -49,9 +47,9 @@ public class MainWindow extends WebFrame {
 
 	private WebMenuBar createMenu() {
 		WebMenuBar result = new WebMenuBar();
-		result.add(new WebMenu(settings.getLocalizedString("mainWindow.menu.file")) {
+		result.add(new WebMenu(AppSettings.getLocalizedString("mainWindow.menu.file")) {
 			{
-				add(new WebMenuItem(settings.getLocalizedString("mainWindow.menu.file.exit")));
+				add(new WebMenuItem(AppSettings.getLocalizedString("mainWindow.menu.file.exit")));
 			}
 		});
 		return result;

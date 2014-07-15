@@ -49,6 +49,6 @@ public class MediaTypeTreeNode extends DefaultMutableTreeNode {
 
 	@Override
 	public String toString() {
-		return AppSettings.getInstance().getLocalizedString(mediaTypeNames.get(mediaType));
+		return AppSettings.getLocalizedString(mediaTypeNames.get(mediaType));
 	}
 }

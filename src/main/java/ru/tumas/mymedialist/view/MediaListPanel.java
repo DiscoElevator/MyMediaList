@@ -43,7 +43,7 @@ public class MediaListPanel extends GroupPanel {
 	public MediaListPanel(MediaListModel model) {
 		super();
 		this.setLayout(new BorderLayout());
-		if (!model.isEmpty()) {
+		if ((model != null) && !model.isEmpty()) {
 			this.add(new WebScrollPane(createTable(model)), BorderLayout.NORTH);
 		}
 	}

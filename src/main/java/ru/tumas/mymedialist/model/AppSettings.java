@@ -22,27 +22,10 @@ import java.util.logging.Logger;
 
 public class AppSettings {
 
-	private static volatile AppSettings instance;
 	private static final Logger logger = Logger.getLogger(AppSettings.class.getName());
+	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("META-INF/Bundle", Locale.getDefault());
 
-	private final ResourceBundle resourceBundle;
-
-	public static AppSettings getInstance() {
-		if (instance == null) {
-			synchronized (AppSettings.class) {
-				if (instance == null) {
-					instance = new AppSettings();
-				}
-			}
-		}
-		return instance;
-	}
-
-	private AppSettings() {
-		resourceBundle = ResourceBundle.getBundle("META-INF/Bundle", Locale.getDefault());
-	}
-
-	public String getLocalizedString(String key) {
+	public static String getLocalizedString(String key) {
 		String result = "???" + key + "???";
 		try {
 			result = resourceBundle.getString(key);
