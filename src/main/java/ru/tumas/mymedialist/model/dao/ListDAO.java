@@ -25,11 +25,11 @@ public interface ListDAO {
 
 	List<MediaListItem> getAll();
 
-	List<MediaListItem> getByStatus(MediaStatus status);
+	List<MediaListItem> get(MediaStatus status);
 
-	List<MediaListItem> getByType(MediaType type);
+	List<MediaListItem> get(MediaType type);
 
-	List<MediaListItem> getByTypeAndStatus(MediaType type, MediaStatus status);
+	List<MediaListItem> get(MediaType type, MediaStatus status);
 
 	MediaListItem saveItem(MediaListItem item);
 

@@ -62,10 +62,10 @@ public class ListDAOImplTest {
 	public void testGetByStatus() {
 		System.out.println("getByStatus");
 		ListDAOImpl instance = new ListDAOImpl(entityManagerFactory);
-		List<MediaListItem> result = instance.getByStatus(MediaStatus.COMPLETED);
+		List<MediaListItem> result = instance.get(MediaStatus.COMPLETED);
 		assertEquals(1, result.size());
 		assertEquals(persistedItems.get(2), result.get(0));
-		result = instance.getByStatus(MediaStatus.DROPPED);
+		result = instance.get(MediaStatus.DROPPED);
 		assertEquals(Collections.emptyList(), result);
 	}
 
@@ -73,9 +73,9 @@ public class ListDAOImplTest {
 	public void testGetByType() {
 		System.out.println("getByType");
 		ListDAOImpl instance = new ListDAOImpl(entityManagerFactory);
-		List<MediaListItem> result = instance.getByType(MediaType.MOVIE);
+		List<MediaListItem> result = instance.get(MediaType.MOVIE);
 		assertEquals(Collections.emptyList(), result);
-		result = instance.getByType(MediaType.ANIME);
+		result = instance.get(MediaType.ANIME);
 		assertEquals(2, result.size());
 	}
 
@@ -83,7 +83,7 @@ public class ListDAOImplTest {
 	public void testGetByTypeAndStatus() {
 		System.out.println("getByTypeAndStatus");
 		ListDAOImpl instance = new ListDAOImpl(entityManagerFactory);
-		List<MediaListItem> result = instance.getByTypeAndStatus(MediaType.ANIME, MediaStatus.COMPLETED);
+		List<MediaListItem> result = instance.get(MediaType.ANIME, MediaStatus.COMPLETED);
 		assertEquals(1, result.size());
 	}
 

@@ -46,7 +46,7 @@ public class ListDAOImpl implements ListDAO {
 	}
 
 	@Override
-	public List<MediaListItem> getByStatus(MediaStatus status) {
+	public List<MediaListItem> get(MediaStatus status) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByStatus", MediaListItem.class);
 		query.setParameter("status", status);
@@ -56,7 +56,7 @@ public class ListDAOImpl implements ListDAO {
 	}
 
 	@Override
-	public List<MediaListItem> getByType(MediaType type) {
+	public List<MediaListItem> get(MediaType type) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByType", MediaListItem.class);
 		query.setParameter("type", type);
@@ -66,7 +66,7 @@ public class ListDAOImpl implements ListDAO {
 	}
 
 	@Override
-	public List<MediaListItem> getByTypeAndStatus(MediaType type, MediaStatus status) {
+	public List<MediaListItem> get(MediaType type, MediaStatus status) {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByTypeAndStatus", MediaListItem.class);
 		query.setParameter("type", type);

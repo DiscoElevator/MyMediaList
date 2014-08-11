@@ -48,7 +48,7 @@ public class TreeNodeSelectionListener implements TreeSelectionListener {
 		} else if (path.getLastPathComponent() instanceof MediaStatusTreeNode) {
 			MediaStatusTreeNode statusNode = (MediaStatusTreeNode) path.getLastPathComponent();
 			System.out.println("selected: " + statusNode.getMediaStatus() + " -> " + statusNode.getMediaType());
-			List<MediaListItem> items = listDAO.getByTypeAndStatus(statusNode.getMediaType(), statusNode.getMediaStatus());
+			List<MediaListItem> items = listDAO.get(statusNode.getMediaType(), statusNode.getMediaStatus());
 			if (items != null) {
 				centerPanel.createRightPanel(new MediaListModel(items));
 			}
