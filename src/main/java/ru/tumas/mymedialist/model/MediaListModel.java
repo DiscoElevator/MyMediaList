@@ -19,6 +19,7 @@ package ru.tumas.mymedialist.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.hibernate.exception.ConstraintViolationException;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 
@@ -49,9 +50,14 @@ public class MediaListModel {
 		this.items = items;
 	}
 
-	public void add(MediaListItem item) {
-		if (item != null) {
+	public void add(MediaListItem item) throws DublicateItemException {
+		if (item == null) {
+			return;
+		}
+		if (!items.contains(item)) {
 			items.add(dao.saveItem(item));
+		} else {
+			throw new DublicateItemException("Trying to add existing item[" + "id: " + item.getId() + ", name: " + item.getOriginalName() + "]");
 		}
 	}
 

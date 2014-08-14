@@ -19,6 +19,7 @@ package ru.tumas.mymedialist.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,8 +45,9 @@ public class MediaListItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 
-	private String nameEng;
-	private String nameRus;
+	@Column(unique=true)
+	private String originalName;
+	private String localizedName;
 	private String country;
 	private int episodes;
 	private int progress;
@@ -64,20 +66,20 @@ public class MediaListItem implements Serializable {
 		return id;
 	}
 
-	public String getNameEng() {
-		return nameEng;
+	public String getOriginalName() {
+		return originalName;
 	}
 
-	public void setNameEng(String nameEng) {
-		this.nameEng = nameEng;
+	public void setOriginalName(String originalName) {
+		this.originalName = originalName;
 	}
 
-	public String getNameRus() {
-		return nameRus;
+	public String getLocalizedName() {
+		return localizedName;
 	}
 
-	public void setNameRus(String nameRus) {
-		this.nameRus = nameRus;
+	public void setLocalizedName(String localizedName) {
+		this.localizedName = localizedName;
 	}
 
 	public String getCountry() {
@@ -172,7 +174,7 @@ public class MediaListItem implements Serializable {
 	public int hashCode() {
 		int hash = 5;
 		hash = 19 * hash + Objects.hashCode(this.id);
-		hash = 19 * hash + Objects.hashCode(this.nameEng);
+		hash = 19 * hash + Objects.hashCode(this.originalName);
 		return hash;
 	}
 
@@ -188,7 +190,7 @@ public class MediaListItem implements Serializable {
 		if (!Objects.equals(this.id, other.id)) {
 			return false;
 		}
-		if (!Objects.equals(this.nameEng, other.nameEng)) {
+		if (!Objects.equals(this.originalName, other.originalName)) {
 			return false;
 		}
 		return true;

@@ -18,6 +18,7 @@ package ru.tumas.mymedialist.view;
 
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.statusbar.WebStatusBar;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
@@ -26,6 +27,8 @@ import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.toolbar.WebToolBar;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.WindowConstants;
 import ru.tumas.mymedialist.model.AppSettings;
 
@@ -64,6 +67,16 @@ public class MainWindow extends WebFrame {
 	private WebToolBar createToolbar() {
 		WebToolBar result = new WebToolBar(WebToolBar.HORIZONTAL);
 		result.setFloatable(false);
+		WebButton button = new WebButton("X");
+		button.setDrawFocus(false);
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("button pressed");
+			}
+		});
+		result.add(button);
 		return result;
 	}
 }

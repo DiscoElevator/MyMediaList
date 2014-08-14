@@ -1,9 +1,6 @@
 package ru.tumas.mymedialist.model;
 
-import ru.tumas.mymedialist.model.MediaType;
 import ru.tumas.mymedialist.model.dao.ListDAOImpl;
-import ru.tumas.mymedialist.model.MediaListItem;
-import ru.tumas.mymedialist.model.MediaStatus;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,7 +88,7 @@ public class ListDAOImplTest {
 	public void testSaveItem() {
 		System.out.println("saveItem");
 		MediaListItem item = new MediaListItem();
-		item.setNameEng("save eng");
+		item.setOriginalName("save eng");
 		item.setType(MediaType.DRAMA);
 		ListDAOImpl instance = new ListDAOImpl(entityManagerFactory);
 		MediaListItem savedItem = instance.saveItem(item);
@@ -106,7 +103,7 @@ public class ListDAOImplTest {
 		System.out.println("saveItems");
 		List<MediaListItem> items = new LinkedList<>();
 		MediaListItem item = new MediaListItem();
-		item.setNameEng("saveAll eng");
+		item.setOriginalName("saveAll eng");
 		item.setType(MediaType.DRAMA);
 		items.add(item);
 		ListDAOImpl instance = new ListDAOImpl(entityManagerFactory);
@@ -119,20 +116,20 @@ public class ListDAOImplTest {
 
 	private List<MediaListItem> persistItems() {
 		MediaListItem item1 = new MediaListItem();
-		item1.setNameEng("item1 eng");
+		item1.setOriginalName("item1 eng");
 		item1.setEpisodes(10);
 		item1.setStartDate(new Date());
 		item1.setStatus(MediaStatus.WATCHING);
 		item1.setType(MediaType.ANIME);
 		MediaListItem item2 = new MediaListItem();
-		item2.setNameEng("item2 eng");
+		item2.setOriginalName("item1 eng");
 		item2.setEpisodes(12);
 		item2.setProgress(1);
 		item2.setEndDate(new Date());
 		item2.setStatus(MediaStatus.WATCHING);
 		item2.setType(MediaType.TV_SHOW);
 		MediaListItem item3 = new MediaListItem();
-		item3.setNameEng("item3 eng");
+		item3.setOriginalName("item3 eng");
 		item3.setEpisodes(10);
 		item3.setStartDate(new Date());
 		item3.setStatus(MediaStatus.COMPLETED);

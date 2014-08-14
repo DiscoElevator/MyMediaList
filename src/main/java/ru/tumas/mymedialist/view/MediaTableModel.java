@@ -16,8 +16,10 @@
  */
 package ru.tumas.mymedialist.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaListModel;
 
@@ -27,7 +29,13 @@ import ru.tumas.mymedialist.model.MediaListModel;
  */
 public class MediaTableModel extends AbstractTableModel {
 
-//	private final List<MediaListItem> items;
+	private static final List<TableColumnMeta> columnMeta = new ArrayList<>();
+	
+	static {
+		columnMeta.add(new TableColumnMeta("table.columns.name", String.class));
+		columnMeta.add(new TableColumnMeta("table.columns.country", String.class));
+	}
+
 	private final MediaListModel model;
 
 	public MediaTableModel(MediaListModel model) {
@@ -41,78 +49,31 @@ public class MediaTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return columnMeta.size();
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		MediaListItem item = model.getItems().get(rowIndex);
-		if (columnIndex == 0) {
-			return item.getNameEng();
-		} else {
-			return item.getCountry();
+		switch (columnIndex) {
+			case 0:
+				return item.getOriginalName();
+			case 1:
+				item.getCountry();
+			default:
+				return "row" + rowIndex + "col" + columnIndex;
 		}
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		if (column == 0) {
-			return "Name";
-		} else {
-			return "Country";
-		}
+		TableColumnMeta meta = columnMeta.get(column);
+		return AppSettings.getLocalizedString((meta != null) ? meta.getKey() : "col" + column);
 	}
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return String.class;
+		TableColumnMeta meta = columnMeta.get(columnIndex);
+		return (meta != null) ? meta.getClass() : String.class;
 	}
-//	       private String[] columnNames = { "Name", "Sport", "# of Years", "Vegetarian" };
-//        private Object[][] data = { { "Kathy", "Snowboarding", 5, false }, { "John", "Rowing", 3, true }, { "Sue", "Knitting", 2, false },
-//                { "Jane", "Speed reading", 20, true }, { "Joe", "Pool", 10, false } };
-//
-//        public final Object[] longValues = { "Jane", "None of the above", 20, Boolean.TRUE };
-//
-//        @Override
-//        public int getColumnCount ()
-//        {
-//            return columnNames.length;
-//        }
-//
-//        @Override
-//        public int getRowCount ()
-//        {
-//            return data.length;
-//        }
-//
-//        @Override
-//        public String getColumnName ( int col )
-//        {
-//            return columnNames[ col ];
-//        }
-//
-//        @Override
-//        public Object getValueAt ( int row, int col )
-//        {
-//            return data[ row ][ col ];
-//        }
-//
-//        @Override
-//        public Class getColumnClass ( int c )
-//        {
-//            return longValues[ c ].getClass ();
-//        }
-//
-//        @Override
-//        public boolean isCellEditable ( int row, int col )
-//        {
-//            return col >= 1;
-//        }
-//
-//        @Override
-//        public void setValueAt ( Object value, int row, int col )
-//        {
-//            data[ row ][ col ] = value;
-//            fireTableCellUpdated ( row, col );
-//        }
 }
