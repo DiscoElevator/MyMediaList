@@ -30,9 +30,10 @@ import ru.tumas.mymedialist.model.MediaListModel;
 public class MediaTableModel extends AbstractTableModel {
 
 	private static final List<TableColumnMeta> columnMeta = new ArrayList<>();
-	
+
 	static {
-		columnMeta.add(new TableColumnMeta("table.columns.name", String.class));
+		columnMeta.add(new TableColumnMeta("table.columns.originalName", String.class));
+		columnMeta.add(new TableColumnMeta("table.columns.localizedName", String.class));
 		columnMeta.add(new TableColumnMeta("table.columns.country", String.class));
 	}
 
@@ -59,7 +60,9 @@ public class MediaTableModel extends AbstractTableModel {
 			case 0:
 				return item.getOriginalName();
 			case 1:
-				item.getCountry();
+				return item.getLocalizedName();
+			case 2:
+				return item.getCountry();
 			default:
 				return "row" + rowIndex + "col" + columnIndex;
 		}

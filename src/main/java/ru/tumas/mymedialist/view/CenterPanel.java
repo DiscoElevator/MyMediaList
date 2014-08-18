@@ -48,7 +48,7 @@ public class CenterPanel extends WebSplitPane {
 		WebTree tree = new WebTree(root);
 		tree.setMultiplySelectionAllowed(false);
 //		tree.setAutoExpandSelectedNode(true);
-		tree.addTreeSelectionListener(new TreeNodeSelectionListener(this));
+		tree.addTreeSelectionListener(new MediaStatusSelectionListener(this));
 		return tree;
 	}
 

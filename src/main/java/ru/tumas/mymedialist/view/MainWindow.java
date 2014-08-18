@@ -18,6 +18,7 @@ package ru.tumas.mymedialist.view;
 
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.statusbar.WebStatusBar;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenu;
@@ -67,13 +68,20 @@ public class MainWindow extends WebFrame {
 	private WebToolBar createToolbar() {
 		WebToolBar result = new WebToolBar(WebToolBar.HORIZONTAL);
 		result.setFloatable(false);
-		WebButton button = new WebButton("X");
+		WebButton button = new WebButton("Add");
 		button.setDrawFocus(false);
+		final MainWindow thisWindow = this;
 		button.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("button pressed");
+				boolean decorateDialogs = WebLookAndFeel.isDecorateDialogs();
+				WebLookAndFeel.setDecorateDialogs(true);
+				AddItemForm addItemForm = new AddItemForm();
+				addItemForm.pack();
+				addItemForm.setLocationRelativeTo(thisWindow);
+				addItemForm.setVisible(true);
+				WebLookAndFeel.setDecorateDialogs(decorateDialogs);
 			}
 		});
 		result.add(button);

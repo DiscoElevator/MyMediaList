@@ -2,8 +2,8 @@ package ru.tumas.mymedialist.view;
 
 public class TableColumnMeta {
 
-	private String key;
-	private Class<?> clazz;
+	private final String key;
+	private final Class<?> clazz;
 
 	public TableColumnMeta(String key, Class<?> clazz) {
 		this.key = key;

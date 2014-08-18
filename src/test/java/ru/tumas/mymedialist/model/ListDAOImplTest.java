@@ -31,7 +31,7 @@ public class ListDAOImplTest {
 	@Before
 	public void setUp() {
 		Map<String, String> props = new HashMap<>();
-		props.put("javax.persistence.jdbc.url", "jdbc:h2:/~test");
+		props.put("javax.persistence.jdbc.url", "jdbc:h2:/~test;MVCC=true");
 		entityManagerFactory = Persistence.createEntityManagerFactory("ru.tumas_MyMediaList_jar_0.0.1PU", props);
 		EntityManager em = entityManagerFactory.createEntityManager();
 		em.getTransaction().begin();
@@ -122,7 +122,7 @@ public class ListDAOImplTest {
 		item1.setStatus(MediaStatus.WATCHING);
 		item1.setType(MediaType.ANIME);
 		MediaListItem item2 = new MediaListItem();
-		item2.setOriginalName("item1 eng");
+		item2.setOriginalName("item2 eng");
 		item2.setEpisodes(12);
 		item2.setProgress(1);
 		item2.setEndDate(new Date());

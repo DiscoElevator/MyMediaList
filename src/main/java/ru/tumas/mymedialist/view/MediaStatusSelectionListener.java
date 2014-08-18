@@ -29,14 +29,12 @@ import ru.tumas.mymedialist.model.dao.ListDAOFactory;
  *
  * @author Maxim Tumas
  */
-public class TreeNodeSelectionListener implements TreeSelectionListener {
+public class MediaStatusSelectionListener implements TreeSelectionListener {
 
 	private final CenterPanel centerPanel;
-	private final ListDAO listDAO;
 
-	public TreeNodeSelectionListener(CenterPanel centerPanel) {
+	public MediaStatusSelectionListener(CenterPanel centerPanel) {
 		this.centerPanel = centerPanel;
-		this.listDAO = ListDAOFactory.createListDAO();
 	}
 
 	@Override
@@ -48,7 +46,8 @@ public class TreeNodeSelectionListener implements TreeSelectionListener {
 		} else if (path.getLastPathComponent() instanceof MediaStatusTreeNode) {
 			MediaStatusTreeNode statusNode = (MediaStatusTreeNode) path.getLastPathComponent();
 			System.out.println("selected: " + statusNode.getMediaStatus() + " -> " + statusNode.getMediaType());
-			List<MediaListItem> items = listDAO.get(statusNode.getMediaType(), statusNode.getMediaStatus());
+			ListDAO dao = ListDAOFactory.createListDAO();
+			List<MediaListItem> items = dao.get(statusNode.getMediaType(), statusNode.getMediaStatus());
 			if (items != null) {
 				centerPanel.createRightPanel(new MediaListModel(items));
 			}
