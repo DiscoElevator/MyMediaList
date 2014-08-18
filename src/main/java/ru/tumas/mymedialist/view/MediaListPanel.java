@@ -20,13 +20,9 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import ru.tumas.mymedialist.model.MediaListItem;
-import ru.tumas.mymedialist.model.MediaListModel;
-import ru.tumas.mymedialist.model.MediaStatus;
-import ru.tumas.mymedialist.model.MediaType;
 
 /**
  *
@@ -40,41 +36,23 @@ public class MediaListPanel extends GroupPanel {
 		this.add(new WebScrollPane(createTable()), BorderLayout.NORTH);
 	}
 
-	public MediaListPanel(MediaListModel model) {
+	public MediaListPanel(List<MediaListItem> items) {
 		super();
 		this.setLayout(new BorderLayout());
-		if ((model != null) && !model.isEmpty()) {
-			this.add(new WebScrollPane(createTable(model)), BorderLayout.NORTH);
+		if ((items != null) && !items.isEmpty()) {
+			this.add(new WebScrollPane(createTable(items)), BorderLayout.NORTH);
 		}
 	}
 
 	private WebTable createTable() {
 		WebTable table = new WebTable();
-//		List<MediaListItem> items = new ArrayList<>();
-//		MediaListItem item1 = new MediaListItem();
-//		item1.setNameEng("Name eng 1");
-//		item1.setCountry("country 1");
-//		item1.setType(MediaType.ANIME);
-//		item1.setStatus(MediaStatus.WATCHING);
-//		items.add(item1);
-//		MediaListItem item2 = new MediaListItem();
-//		item2.setNameEng("Name eng 2");
-//		item2.setCountry("country 2");
-//		item2.setType(MediaType.ANIME);
-//		item2.setStatus(MediaStatus.WATCHING);
-//		items.add(item2);
-		MediaListModel model = new MediaListModel();
-//		model.add(item1);
-//		model.add(item2);
-		table.setModel(new MediaTableModel(model));
-//		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		return table;
 	}
 
-	private WebTable createTable(MediaListModel model) {
+	private WebTable createTable(List<MediaListItem> items) {
 		WebTable table = new WebTable();
-		table.setModel(new MediaTableModel(model));
+		table.setModel(new MediaTableModel(items));
 //		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		return table;

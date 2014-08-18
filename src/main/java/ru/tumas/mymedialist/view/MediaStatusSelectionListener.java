@@ -21,7 +21,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import ru.tumas.mymedialist.model.MediaListItem;
-import ru.tumas.mymedialist.model.MediaListModel;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 
@@ -49,7 +48,7 @@ public class MediaStatusSelectionListener implements TreeSelectionListener {
 			ListDAO dao = ListDAOFactory.createListDAO();
 			List<MediaListItem> items = dao.get(statusNode.getMediaType(), statusNode.getMediaStatus());
 			if (items != null) {
-				centerPanel.createRightPanel(new MediaListModel(items));
+				centerPanel.createRightPanel(items);
 			}
 		}
 	}

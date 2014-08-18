@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2014 Maxim_Tumas
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ru.tumas.mymedialist.view;
 
 import com.alee.extended.layout.TableLayout;
@@ -21,6 +37,10 @@ import ru.tumas.mymedialist.model.MediaType;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 
+/**
+ *
+ * @author Maxim Tumas
+ */
 public class AddItemForm extends WebDialog {
 
 	private final WebTextField originalNameTextField;
@@ -70,7 +90,9 @@ public class AddItemForm extends WebDialog {
 	}
 
 	private TableLayout createLayout() {
-		double[][] size = new double[][]{{TableLayout.PREFERRED, TableLayout.FILL}, {TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}};
+		double[][] size = new double[][]{
+			{TableLayout.PREFERRED, TableLayout.FILL},
+			{TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}};
 		TableLayout layout = new TableLayout(size);
 		layout.setHGap(5);
 		layout.setVGap(5);

@@ -19,8 +19,9 @@ package ru.tumas.mymedialist.view;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tree.WebTree;
+import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
-import ru.tumas.mymedialist.model.MediaListModel;
+import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 
@@ -61,7 +62,7 @@ public class CenterPanel extends WebSplitPane {
 		return result;
 	}
 
-	public void createRightPanel(MediaListModel model) {
-		this.setRightComponent(new WebScrollPane(new MediaListPanel(model)));
+	public void createRightPanel(List<MediaListItem> items) {
+		this.setRightComponent(new WebScrollPane(new MediaListPanel(items)));
 	}
 }

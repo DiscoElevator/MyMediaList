@@ -21,7 +21,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
-import ru.tumas.mymedialist.model.MediaListModel;
 
 /**
  *
@@ -37,15 +36,15 @@ public class MediaTableModel extends AbstractTableModel {
 		columnMeta.add(new TableColumnMeta("table.columns.country", String.class));
 	}
 
-	private final MediaListModel model;
+	private final List<MediaListItem> items;
 
-	public MediaTableModel(MediaListModel model) {
-		this.model = model;
+	public MediaTableModel(List<MediaListItem> items) {
+		this.items = items;
 	}
 
 	@Override
 	public int getRowCount() {
-		return model.getItems().size();
+		return items.size();
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class MediaTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		MediaListItem item = model.getItems().get(rowIndex);
+		MediaListItem item = items.get(rowIndex);
 		switch (columnIndex) {
 			case 0:
 				return item.getOriginalName();
