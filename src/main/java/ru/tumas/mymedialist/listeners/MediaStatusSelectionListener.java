@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.tumas.mymedialist.view;
+package ru.tumas.mymedialist.listeners;
 
 import java.util.List;
 import javax.swing.event.TreeSelectionEvent;
@@ -23,6 +23,9 @@ import javax.swing.tree.TreePath;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
+import ru.tumas.mymedialist.view.CenterPanel;
+import ru.tumas.mymedialist.view.MediaStatusTreeNode;
+import ru.tumas.mymedialist.view.MediaTypeTreeNode;
 
 /**
  *

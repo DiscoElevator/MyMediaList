@@ -16,6 +16,7 @@
  */
 package ru.tumas.mymedialist.view;
 
+import ru.tumas.mymedialist.view.forms.AddItemForm;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.laf.WebLookAndFeel;

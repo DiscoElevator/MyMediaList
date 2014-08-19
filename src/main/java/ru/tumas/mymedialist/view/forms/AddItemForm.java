@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.tumas.mymedialist.view;
+package ru.tumas.mymedialist.view.forms;
 
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.button.WebButton;
@@ -39,6 +39,8 @@ import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
+import ru.tumas.mymedialist.listeners.MaxEpisodesChangeListener;
+import ru.tumas.mymedialist.listeners.StatusChangeListener;
 
 /**
  *
@@ -67,6 +69,7 @@ public class AddItemForm extends WebDialog {
 		episodesWatched = new WebSpinner(new SpinnerNumberModel(0, 0, 999, 1));
 		statusComboBox.addActionListener(new StatusChangeListener(maxEpisodes, episodesWatched));
 		maxEpisodes.addChangeListener(new MaxEpisodesChangeListener(episodesWatched, statusComboBox));
+		statusComboBox.setSelectedIndex(0);
 		setModal(true);
 		setResizable(false);
 		setMinimumSize(new Dimension(500, 400));

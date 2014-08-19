@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.tumas.mymedialist.view;
+package ru.tumas.mymedialist.listeners;
 
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.spinner.WebSpinner;

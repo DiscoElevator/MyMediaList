@@ -16,6 +16,7 @@
  */
 package ru.tumas.mymedialist.view;
 
+import ru.tumas.mymedialist.listeners.MediaStatusSelectionListener;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tree.WebTree;
