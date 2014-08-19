@@ -34,6 +34,7 @@ public class MediaTableModel extends AbstractTableModel {
 		columnMeta.add(new TableColumnMeta("table.columns.originalName", String.class));
 		columnMeta.add(new TableColumnMeta("table.columns.localizedName", String.class));
 		columnMeta.add(new TableColumnMeta("table.columns.country", String.class));
+		columnMeta.add(new TableColumnMeta("table.columns.episodes", Integer.class));
 	}
 
 	private final List<MediaListItem> items;
@@ -62,6 +63,8 @@ public class MediaTableModel extends AbstractTableModel {
 				return item.getLocalizedName();
 			case 2:
 				return item.getCountry();
+			case 3:
+				return item.getEpisodes();
 			default:
 				return "row" + rowIndex + "col" + columnIndex;
 		}

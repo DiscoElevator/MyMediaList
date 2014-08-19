@@ -22,6 +22,7 @@ import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.spinner.WebSpinner;
 import com.alee.laf.text.WebTextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -31,6 +32,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import javax.swing.SpinnerNumberModel;
+import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
@@ -48,16 +51,22 @@ public class AddItemForm extends WebDialog {
 	private final WebComboBox countryComboBox;
 	private final WebComboBox typeComboBox;
 	private final WebComboBox statusComboBox;
+	private final WebSpinner maxEpisodes;
+	private final WebSpinner episodesWatched;
 
 	public AddItemForm() {
 		super();
 		originalNameTextField = new WebTextField();
-		originalNameTextField.setMinimumWidth(100);
+//		originalNameTextField.setMinimumWidth(100);
 		localizedNameTextField = new WebTextField();
-		localizedNameTextField.setMinimumWidth(100);
+//		localizedNameTextField.setMinimumWidth(100);
 		countryComboBox = new WebComboBox(getCountries());
 		typeComboBox = new WebComboBox(MediaType.values());
 		statusComboBox = new WebComboBox(MediaStatus.values());
+		maxEpisodes = new WebSpinner(new SpinnerNumberModel(1, 1, 999, 1));
+		episodesWatched = new WebSpinner(new SpinnerNumberModel(0, 0, 999, 1));
+		statusComboBox.addActionListener(new StatusChangeListener(maxEpisodes, episodesWatched));
+		maxEpisodes.addChangeListener(new MaxEpisodesChangeListener(episodesWatched, statusComboBox));
 		setModal(true);
 		setResizable(false);
 		setMinimumSize(new Dimension(500, 400));
@@ -66,15 +75,19 @@ public class AddItemForm extends WebDialog {
 		panel.setLayout(createLayout());
 		panel.setMargin(5, 5, 5, 5);
 		panel.add(new WebLabel("nameOrig"), "0,0");
-		panel.add(originalNameTextField, "1,0");
+		panel.add(originalNameTextField, "1,0,3,0");
 		panel.add(new WebLabel("nameLocalized"), "0,1");
-		panel.add(localizedNameTextField, "1,1");
+		panel.add(localizedNameTextField, "1,1,3,1");
 		panel.add(new WebLabel("country"), "0,2");
-		panel.add(countryComboBox, "1,2");
+		panel.add(countryComboBox, "1,2,3,2");
 		panel.add(new WebLabel("type"), "0,3");
-		panel.add(typeComboBox, "1,3");
+		panel.add(typeComboBox, "1,3,3,3");
 		panel.add(new WebLabel("status"), "0,4");
-		panel.add(statusComboBox, "1,4");
+		panel.add(statusComboBox, "1,4,3,4");
+		panel.add(new WebLabel("progress"), "0,5");
+		panel.add(episodesWatched, "1,5");
+		panel.add(new WebLabel("/"), "2,5");
+		panel.add(maxEpisodes, "3,5");
 //		panel.setLayout(new FormLayout(false, true));
 //		panel.setMargin(5, 5, 5, 5);
 //		panel.add(new WebLabel("nameOrig"), FormLayout.LEFT);
@@ -87,12 +100,14 @@ public class AddItemForm extends WebDialog {
 //		panel.add(statusComboBox, FormLayout.RIGHT);
 		add(panel, BorderLayout.NORTH);
 		add(createAddButton(), BorderLayout.SOUTH);
+		setTitle(AppSettings.getLocalizedString("addForm.title"));
 	}
 
 	private TableLayout createLayout() {
 		double[][] size = new double[][]{
-			{TableLayout.PREFERRED, TableLayout.FILL},
-			{TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}};
+			{TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL},
+			{TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}};
 		TableLayout layout = new TableLayout(size);
 		layout.setHGap(5);
 		layout.setVGap(5);
@@ -113,6 +128,8 @@ public class AddItemForm extends WebDialog {
 					item.setCountry((String) countryComboBox.getSelectedItem());
 					item.setType((MediaType) typeComboBox.getSelectedItem());
 					item.setStatus((MediaStatus) statusComboBox.getSelectedItem());
+					item.setEpisodes((int) maxEpisodes.getValue());
+					item.setProgress((int) episodesWatched.getValue());
 					ListDAO dao = ListDAOFactory.createListDAO();
 					dao.saveItem(item);
 				}
