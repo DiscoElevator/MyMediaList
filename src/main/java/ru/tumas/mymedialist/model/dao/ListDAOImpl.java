@@ -16,6 +16,7 @@
  */
 package ru.tumas.mymedialist.model.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,8 +41,12 @@ public class ListDAOImpl implements ListDAO {
 	@Override
 	public List<MediaListItem> getAll() {
 		EntityManager em = entityManagerFactory.createEntityManager();
-		List<MediaListItem> items = em.createNamedQuery("MediaListItem.getAll", MediaListItem.class).getResultList();
-		em.close();
+		List<MediaListItem> items = new ArrayList<>();
+		try {
+			items = em.createNamedQuery("MediaListItem.getAll", MediaListItem.class).getResultList();
+		} finally {
+			em.close();
+		}
 		return Collections.unmodifiableList(items);
 	}
 
@@ -50,8 +55,12 @@ public class ListDAOImpl implements ListDAO {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByStatus", MediaListItem.class);
 		query.setParameter("status", status);
-		List<MediaListItem> items = query.getResultList();
-		em.close();
+		List<MediaListItem> items = new ArrayList<>();
+		try {
+			items = query.getResultList();
+		} finally {
+			em.close();
+		}
 		return Collections.unmodifiableList(items);
 	}
 
@@ -60,8 +69,12 @@ public class ListDAOImpl implements ListDAO {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByType", MediaListItem.class);
 		query.setParameter("type", type);
-		List<MediaListItem> items = query.getResultList();
-		em.close();
+		List<MediaListItem> items = new ArrayList<>();
+		try {
+			items = query.getResultList();
+		} finally {
+			em.close();
+		}
 		return Collections.unmodifiableList(items);
 	}
 
@@ -71,8 +84,12 @@ public class ListDAOImpl implements ListDAO {
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByTypeAndStatus", MediaListItem.class);
 		query.setParameter("type", type);
 		query.setParameter("status", status);
-		List<MediaListItem> items = query.getResultList();
-		em.close();
+		List<MediaListItem> items = new ArrayList<>();
+		try {
+			items = query.getResultList();
+		} finally {
+			em.close();
+		}
 		return Collections.unmodifiableList(items);
 	}
 
@@ -82,10 +99,14 @@ public class ListDAOImpl implements ListDAO {
 			return null;
 		}
 		EntityManager em = entityManagerFactory.createEntityManager();
-		em.getTransaction().begin();
-		MediaListItem result = em.merge(item);
-		em.getTransaction().commit();
-		em.close();
+		MediaListItem result = null;
+		try {
+			em.getTransaction().begin();
+			result = em.merge(item);
+			em.getTransaction().commit();
+		} finally {
+			em.close();
+		}
 		return result;
 	}
 
@@ -96,12 +117,15 @@ public class ListDAOImpl implements ListDAO {
 		}
 		List<MediaListItem> result = new LinkedList<>();
 		EntityManager em = entityManagerFactory.createEntityManager();
-		em.getTransaction().begin();
-		for (MediaListItem item : items) {
-			result.add(em.merge(item));
+		try {
+			em.getTransaction().begin();
+			for (MediaListItem item : items) {
+				result.add(em.merge(item));
+			}
+			em.getTransaction().commit();
+		} finally {
+			em.close();
 		}
-		em.getTransaction().commit();
-		em.close();
 		return result;
 	}
 
@@ -113,9 +137,13 @@ public class ListDAOImpl implements ListDAO {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByOriginalName", MediaListItem.class);
 		query.setParameter("name", originalName);
-		List<MediaListItem> items = query.getResultList();
-		em.close();
-		if (!items.isEmpty()) {
+		List<MediaListItem> items = null;
+		try {
+			items = query.getResultList();
+		} finally {
+			em.close();
+		}
+		if ((items != null) && !items.isEmpty()) {
 			return items.get(0);
 		} else {
 			return null;
