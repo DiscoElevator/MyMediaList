@@ -40,6 +40,10 @@ public final class ValidationUtils {
 		if (item.getProgress() > item.getEpisodes()) {
 			errors.add(new ValidationError("progress"));
 		}
+		if ((item.getStartDate() != null) && (item.getEndDate() != null)
+				&& (item.getStartDate().compareTo(item.getEndDate()) > 0)) {
+			errors.add(new ValidationError("startDate"));
+		}
 		return errors;
 	}
 }

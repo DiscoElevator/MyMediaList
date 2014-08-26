@@ -17,6 +17,8 @@
  */
 package ru.tumas.mymedialist.listeners;
 
+import com.alee.extended.date.WebDateField;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.spinner.WebSpinner;
 import java.awt.event.ActionEvent;
@@ -31,10 +33,17 @@ public class StatusChangeListener implements ActionListener {
 
 	private final WebSpinner maxEpisodes;
 	private final WebSpinner episodesWatched;
+	private final WebDateField startDate;
+	private final WebDateField endDate;
+	private final WebButton[] clearButtons;
 
-	public StatusChangeListener(WebSpinner maxEpisodes, WebSpinner episodesWatched) {
+	public StatusChangeListener(WebSpinner maxEpisodes, WebSpinner episodesWatched,
+			WebDateField startDate, WebDateField endDate, WebButton[] clearButtons) {
 		this.maxEpisodes = maxEpisodes;
 		this.episodesWatched = episodesWatched;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.clearButtons = clearButtons;
 	}
 
 	@Override
@@ -44,18 +53,36 @@ public class StatusChangeListener implements ActionListener {
 			case PLAN_TO_WATCH:
 				episodesWatched.setValue(0);
 				episodesWatched.setEnabled(false);
+				startDate.setEnabled(false);
+				endDate.setEnabled(false);
+				disableClearButtons();
 				break;
 			case WATCHING:
-				episodesWatched.setEnabled(true);
-				break;
 			case DROPPED:
 				episodesWatched.setEnabled(true);
+				startDate.setEnabled(true);
+				endDate.setEnabled(true);
+				enableClearButtons();
 				break;
 			case COMPLETED:
 				episodesWatched.setValue(maxEpisodes.getValue());
 				episodesWatched.setEnabled(false);
+				startDate.setEnabled(true);
+				endDate.setEnabled(true);
+				enableClearButtons();
 				break;
 		}
 	}
 
+	private void disableClearButtons() {
+		for (WebButton button : clearButtons) {
+			button.setEnabled(false);
+		}
+	}
+
+	private void enableClearButtons() {
+		for (WebButton button : clearButtons) {
+			button.setEnabled(true);
+		}
+	}
 }

@@ -16,6 +16,7 @@
  */
 package ru.tumas.mymedialist.view.forms;
 
+import com.alee.extended.date.WebDateField;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.progress.WebProgressOverlay;
 import com.alee.laf.button.WebButton;
@@ -35,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.SpinnerNumberModel;
+import ru.tumas.mymedialist.listeners.ClearDateActionListener;
 import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
@@ -60,6 +62,8 @@ public class AddItemForm extends WebDialog {
 	private final WebSpinner maxEpisodes;
 	private final WebSpinner episodesWatched;
 	private final WebProgressOverlay progressOverlay;
+	private final WebDateField startDate;
+	private final WebDateField endDate;
 
 	public AddItemForm() {
 		super();
@@ -72,7 +76,12 @@ public class AddItemForm extends WebDialog {
 		statusComboBox = new WebComboBox(MediaStatus.values());
 		maxEpisodes = new WebSpinner(new SpinnerNumberModel(1, 1, 999, 1));
 		episodesWatched = new WebSpinner(new SpinnerNumberModel(0, 0, 1, 1));
-		statusComboBox.addActionListener(new StatusChangeListener(maxEpisodes, episodesWatched));
+		startDate = new WebDateField();
+		endDate = new WebDateField();
+		WebButton startDateClearButton = new WebButton("Clear", new ClearDateActionListener(startDate));
+		WebButton endDateClearButton = new WebButton("Clear", new ClearDateActionListener(endDate));
+		statusComboBox.addActionListener(new StatusChangeListener(maxEpisodes, episodesWatched,
+				startDate, endDate, new WebButton[]{startDateClearButton, endDateClearButton}));
 		maxEpisodes.addChangeListener(new MaxEpisodesChangeListener(episodesWatched, statusComboBox));
 		statusComboBox.setSelectedIndex(0); // fires initial notification
 		setModal(true);
@@ -82,20 +91,26 @@ public class AddItemForm extends WebDialog {
 		WebPanel panel = new WebPanel();
 		panel.setLayout(createLayout());
 		panel.setMargin(5, 5, 5, 5);
-		panel.add(new WebLabel("nameOrig"), "0,0");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.originalName")), "0,0");
 		panel.add(originalNameTextField, "1,0,3,0");
-		panel.add(new WebLabel("nameLocalized"), "0,1");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.localizedName")), "0,1");
 		panel.add(localizedNameTextField, "1,1,3,1");
-		panel.add(new WebLabel("country"), "0,2");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.country")), "0,2");
 		panel.add(countryComboBox, "1,2,3,2");
-		panel.add(new WebLabel("type"), "0,3");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.type")), "0,3");
 		panel.add(typeComboBox, "1,3,3,3");
-		panel.add(new WebLabel("status"), "0,4");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.status")), "0,4");
 		panel.add(statusComboBox, "1,4,3,4");
-		panel.add(new WebLabel("progress"), "0,5");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.progress")), "0,5");
 		panel.add(episodesWatched, "1,5");
 		panel.add(new WebLabel("/"), "2,5");
 		panel.add(maxEpisodes, "3,5");
+		panel.add(new WebLabel("startDate"), "0,6");
+		panel.add(startDate, "1,6");
+		panel.add(startDateClearButton, "3,6");
+		panel.add(new WebLabel("endDate"), "0,7");
+		panel.add(endDate, "1,7");
+		panel.add(endDateClearButton, "3,7");
 //		panel.setLayout(new FormLayout(false, true));
 //		panel.setMargin(5, 5, 5, 5);
 //		panel.add(new WebLabel("nameOrig"), FormLayout.LEFT);
@@ -118,7 +133,8 @@ public class AddItemForm extends WebDialog {
 		double[][] size = new double[][]{
 			{TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL},
 			{TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}};
+				TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+				TableLayout.PREFERRED}};
 		TableLayout layout = new TableLayout(size);
 		layout.setHGap(5);
 		layout.setVGap(5);
@@ -141,6 +157,8 @@ public class AddItemForm extends WebDialog {
 				item.setStatus((MediaStatus) statusComboBox.getSelectedItem());
 				item.setEpisodes((int) maxEpisodes.getValue());
 				item.setProgress((int) episodesWatched.getValue());
+				item.setStartDate(startDate.getDate());
+				item.setEndDate(endDate.getDate());
 				List<ValidationError> errors = ValidationUtils.validateItem(item);
 				if (!errors.isEmpty()) {
 					processValidationErrors(errors);
