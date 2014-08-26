@@ -24,7 +24,6 @@
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	 <netbeans.hint.license>gpl20</netbeans.hint.license>
 	</properties>
 
 	<dependencies>

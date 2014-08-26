@@ -18,6 +18,7 @@ package ru.tumas.mymedialist.listeners;
 
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.spinner.WebSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import ru.tumas.mymedialist.model.MediaStatus;
@@ -38,9 +39,17 @@ public class MaxEpisodesChangeListener implements ChangeListener {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		int maxEpisodes = (int) ((WebSpinner) e.getSource()).getValue();
+		SpinnerNumberModel model = (SpinnerNumberModel) episodesWatched.getModel();
+		model.setMaximum(maxEpisodes);
 		MediaStatus status = (MediaStatus) statusComboBox.getSelectedItem();
 		if (MediaStatus.COMPLETED.equals(status)) {
 			episodesWatched.setValue(((WebSpinner) e.getSource()).getValue());
+		} else {
+			int progress = (int) episodesWatched.getValue();
+			if (maxEpisodes < progress) {
+				episodesWatched.setValue(maxEpisodes);
+			}
 		}
 	}
 

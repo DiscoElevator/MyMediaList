@@ -66,10 +66,10 @@ public class AddItemForm extends WebDialog {
 		typeComboBox = new WebComboBox(MediaType.values());
 		statusComboBox = new WebComboBox(MediaStatus.values());
 		maxEpisodes = new WebSpinner(new SpinnerNumberModel(1, 1, 999, 1));
-		episodesWatched = new WebSpinner(new SpinnerNumberModel(0, 0, 999, 1));
+		episodesWatched = new WebSpinner(new SpinnerNumberModel(0, 0, 1, 1));
 		statusComboBox.addActionListener(new StatusChangeListener(maxEpisodes, episodesWatched));
 		maxEpisodes.addChangeListener(new MaxEpisodesChangeListener(episodesWatched, statusComboBox));
-		statusComboBox.setSelectedIndex(0);
+		statusComboBox.setSelectedIndex(0); // fires initial notification
 		setModal(true);
 		setResizable(false);
 		setMinimumSize(new Dimension(500, 400));
