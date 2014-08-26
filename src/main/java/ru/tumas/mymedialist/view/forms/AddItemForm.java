@@ -17,9 +17,11 @@
 package ru.tumas.mymedialist.view.forms;
 
 import com.alee.extended.layout.TableLayout;
+import com.alee.extended.progress.WebProgressOverlay;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.laf.spinner.WebSpinner;
@@ -41,6 +43,8 @@ import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 import ru.tumas.mymedialist.listeners.MaxEpisodesChangeListener;
 import ru.tumas.mymedialist.listeners.StatusChangeListener;
+import ru.tumas.mymedialist.util.validation.ValidationError;
+import ru.tumas.mymedialist.util.validation.ValidationUtils;
 
 /**
  *
@@ -55,6 +59,7 @@ public class AddItemForm extends WebDialog {
 	private final WebComboBox statusComboBox;
 	private final WebSpinner maxEpisodes;
 	private final WebSpinner episodesWatched;
+	private final WebProgressOverlay progressOverlay;
 
 	public AddItemForm() {
 		super();
@@ -102,7 +107,10 @@ public class AddItemForm extends WebDialog {
 //		panel.add(new WebLabel("status"), FormLayout.LEFT);
 //		panel.add(statusComboBox, FormLayout.RIGHT);
 		add(panel, BorderLayout.NORTH);
-		add(createAddButton(), BorderLayout.SOUTH);
+		progressOverlay = new WebProgressOverlay();
+		progressOverlay.setConsumeEvents(false);
+		progressOverlay.setComponent(createAddButton());
+		add(progressOverlay, BorderLayout.SOUTH);
 		setTitle(AppSettings.getLocalizedString("addForm.title"));
 	}
 
@@ -119,26 +127,50 @@ public class AddItemForm extends WebDialog {
 
 	private WebButton createAddButton() {
 		WebButton addButton = new WebButton("Add");
+		final WebDialog dialog = this;
 		addButton.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				System.out.println("entered text: " + originalNameTextField.getText());
-				if (!"".equals(originalNameTextField.getText())) {
-					MediaListItem item = new MediaListItem();
-					item.setOriginalName(originalNameTextField.getText());
-					item.setLocalizedName(localizedNameTextField.getText());
-					item.setCountry((String) countryComboBox.getSelectedItem());
-					item.setType((MediaType) typeComboBox.getSelectedItem());
-					item.setStatus((MediaStatus) statusComboBox.getSelectedItem());
-					item.setEpisodes((int) maxEpisodes.getValue());
-					item.setProgress((int) episodesWatched.getValue());
-					ListDAO dao = ListDAOFactory.createListDAO();
-					dao.saveItem(item);
+				final MediaListItem item = new MediaListItem();
+				item.setOriginalName(originalNameTextField.getText());
+				item.setLocalizedName(localizedNameTextField.getText());
+				item.setCountry((String) countryComboBox.getSelectedItem());
+				item.setType((MediaType) typeComboBox.getSelectedItem());
+				item.setStatus((MediaStatus) statusComboBox.getSelectedItem());
+				item.setEpisodes((int) maxEpisodes.getValue());
+				item.setProgress((int) episodesWatched.getValue());
+				List<ValidationError> errors = ValidationUtils.validateItem(item);
+				if (!errors.isEmpty()) {
+					processValidationErrors(errors);
+				} else {
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							dialog.setEnabled(false);
+							progressOverlay.setShowLoad(true);
+							ListDAO dao = ListDAOFactory.createListDAO();
+							dao.saveItem(item);
+							progressOverlay.setShowLoad(false);
+							dialog.setEnabled(true);
+						}
+					}).start();
 				}
 			}
 		});
 		return addButton;
+	}
+
+	private void processValidationErrors(List<ValidationError> errors) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Validation fails on fields: ");
+		for (ValidationError error : errors) {
+			sb.append(error.getFieldName());
+			sb.append(",");
+		}
+		WebOptionPane.showMessageDialog(this, sb.toString());
 	}
 
 	private static String[] getCountries() {
