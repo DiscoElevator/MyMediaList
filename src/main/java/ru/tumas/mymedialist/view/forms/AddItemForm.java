@@ -18,7 +18,6 @@ package ru.tumas.mymedialist.view.forms;
 
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.layout.TableLayout;
-import com.alee.extended.progress.WebProgressOverlay;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
@@ -47,6 +46,7 @@ import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 import ru.tumas.mymedialist.listeners.MaxEpisodesChangeListener;
 import ru.tumas.mymedialist.listeners.StatusChangeListener;
+import ru.tumas.mymedialist.util.UIUtils;
 import ru.tumas.mymedialist.util.validation.ValidationError;
 import ru.tumas.mymedialist.util.validation.ValidationUtils;
 
@@ -65,7 +65,6 @@ public class AddItemForm extends WebDialog {
 	private final WebComboBox statusComboBox;
 	private final WebSpinner maxEpisodes;
 	private final WebSpinner episodesWatched;
-	private final WebProgressOverlay progressOverlay;
 	private final WebDateField startDate;
 	private final WebDateField endDate;
 
@@ -126,10 +125,7 @@ public class AddItemForm extends WebDialog {
 //		panel.add(new WebLabel("status"), FormLayout.LEFT);
 //		panel.add(statusComboBox, FormLayout.RIGHT);
 		add(panel, BorderLayout.NORTH);
-		progressOverlay = new WebProgressOverlay();
-		progressOverlay.setConsumeEvents(false);
-		progressOverlay.setComponent(createAddButton());
-		add(progressOverlay, BorderLayout.SOUTH);
+		add(createAddButton(), BorderLayout.SOUTH);
 		setTitle(AppSettings.getLocalizedString("addForm.title"));
 	}
 
@@ -168,12 +164,10 @@ public class AddItemForm extends WebDialog {
 				if (!errors.isEmpty()) {
 					processValidationErrors(errors);
 				} else {
-					new Thread(new Runnable() {
+					UIUtils.runBlockingTask(dialog, new Runnable() {
 
 						@Override
 						public void run() {
-							dialog.setEnabled(false);
-							progressOverlay.setShowLoad(true);
 							ListDAO dao = ListDAOFactory.createListDAO();
 							try {
 								dao.saveItem(item);
@@ -181,10 +175,8 @@ public class AddItemForm extends WebDialog {
 								WebOptionPane.showMessageDialog(dialog, AppSettings.getLocalizedString("error.addForm.cannotSave"),
 										AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
 							}
-							progressOverlay.setShowLoad(false);
-							dialog.setEnabled(true);
 						}
-					}).start();
+					});
 				}
 			}
 		});

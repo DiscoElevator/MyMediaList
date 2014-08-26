@@ -19,13 +19,18 @@ package ru.tumas.mymedialist;
 import com.alee.laf.WebLookAndFeel;
 import javax.swing.SwingUtilities;
 import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 import ru.tumas.mymedialist.view.MainWindow;
 
 public class App {
 
+	private static final Logger logger = LoggerFactory.getLogger(App.class);
+
 	public static void main(String[] args) {
 		PropertyConfigurator.configure("logger.properties");
+		logger.info("Application startup");
 		ListDAOFactory.createListDAO();
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -36,6 +41,7 @@ public class App {
 
 				MainWindow window = new MainWindow();
 				window.setVisible(true);
+				logger.info("Application started");
 			}
 		});
 	}
