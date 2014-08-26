@@ -16,10 +16,12 @@
  */
 package ru.tumas.mymedialist.listeners;
 
+import com.alee.laf.optionpane.WebOptionPane;
 import java.util.List;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
+import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
@@ -49,7 +51,13 @@ public class MediaStatusSelectionListener implements TreeSelectionListener {
 			MediaStatusTreeNode statusNode = (MediaStatusTreeNode) path.getLastPathComponent();
 			System.out.println("selected: " + statusNode.getMediaStatus() + " -> " + statusNode.getMediaType());
 			ListDAO dao = ListDAOFactory.createListDAO();
-			List<MediaListItem> items = dao.get(statusNode.getMediaType(), statusNode.getMediaStatus());
+			List<MediaListItem> items = null;
+			try {
+				items = dao.get(statusNode.getMediaType(), statusNode.getMediaStatus());
+			} catch (Exception ex) {
+				WebOptionPane.showMessageDialog(centerPanel, AppSettings.getLocalizedString("error.message.cannotGetItems"),
+						AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
+			}
 			if (items != null) {
 				centerPanel.createRightPanel(items);
 			}

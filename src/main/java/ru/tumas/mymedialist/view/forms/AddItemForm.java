@@ -36,6 +36,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.SpinnerNumberModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.tumas.mymedialist.listeners.ClearDateActionListener;
 import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
@@ -53,6 +55,8 @@ import ru.tumas.mymedialist.util.validation.ValidationUtils;
  * @author Maxim Tumas
  */
 public class AddItemForm extends WebDialog {
+
+	private static final Logger logger = LoggerFactory.getLogger(AddItemForm.class);
 
 	private final WebTextField originalNameTextField;
 	private final WebTextField localizedNameTextField;
@@ -148,7 +152,7 @@ public class AddItemForm extends WebDialog {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				System.out.println("entered text: " + originalNameTextField.getText());
+				logger.debug("Trying to add new item");
 				final MediaListItem item = new MediaListItem();
 				item.setOriginalName(originalNameTextField.getText());
 				item.setLocalizedName(localizedNameTextField.getText());
@@ -159,6 +163,7 @@ public class AddItemForm extends WebDialog {
 				item.setProgress((int) episodesWatched.getValue());
 				item.setStartDate(startDate.getDate());
 				item.setEndDate(endDate.getDate());
+				logger.debug("Validating item: " + item.toString());
 				List<ValidationError> errors = ValidationUtils.validateItem(item);
 				if (!errors.isEmpty()) {
 					processValidationErrors(errors);
@@ -170,7 +175,12 @@ public class AddItemForm extends WebDialog {
 							dialog.setEnabled(false);
 							progressOverlay.setShowLoad(true);
 							ListDAO dao = ListDAOFactory.createListDAO();
-							dao.saveItem(item);
+							try {
+								dao.saveItem(item);
+							} catch (Exception ex) {
+								WebOptionPane.showMessageDialog(dialog, AppSettings.getLocalizedString("error.addForm.cannotSave"),
+										AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
+							}
 							progressOverlay.setShowLoad(false);
 							dialog.setEnabled(true);
 						}
@@ -188,7 +198,8 @@ public class AddItemForm extends WebDialog {
 			sb.append(error.getFieldName());
 			sb.append(",");
 		}
-		WebOptionPane.showMessageDialog(this, sb.toString(), AppSettings.getLocalizedString("addForm.error.title"), WebOptionPane.ERROR_MESSAGE);
+		logger.debug("Validation failed: " + sb.toString());
+		WebOptionPane.showMessageDialog(this, sb.toString(), AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
 	}
 
 	private static String[] getCountries() {

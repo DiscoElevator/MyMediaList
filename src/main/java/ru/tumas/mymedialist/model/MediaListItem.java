@@ -19,7 +19,6 @@ package ru.tumas.mymedialist.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -145,8 +144,6 @@ public class MediaListItem implements Serializable {
 	public void setStatus(MediaStatus status) {
 		this.status = status;
 	}
-	
-	
 
 //	@Override
 //	public int hashCode() {
@@ -169,7 +166,6 @@ public class MediaListItem implements Serializable {
 //		}
 //		return true;
 //	}
-
 	@Override
 	public int hashCode() {
 		int hash = 5;
@@ -194,5 +190,14 @@ public class MediaListItem implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "MediaListItem{" + "id=" + id + ", originalName=" + originalName
+				+ ", localizedName=" + localizedName + ", country=" + country + ", episodes="
+				+ episodes + ", progress=" + progress + ", creationYear=" + creationYear
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", type=" + type
+				+ ", status=" + status + '}';
 	}
 }

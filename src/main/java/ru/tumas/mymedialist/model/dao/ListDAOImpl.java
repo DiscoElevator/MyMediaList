@@ -23,11 +23,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 
 public class ListDAOImpl implements ListDAO {
+
+	private static final Logger logger = LoggerFactory.getLogger(ListDAOImpl.class);
 
 	private final EntityManagerFactory entityManagerFactory;
 
@@ -44,6 +48,9 @@ public class ListDAOImpl implements ListDAO {
 		List<MediaListItem> items = new ArrayList<>();
 		try {
 			items = em.createNamedQuery("MediaListItem.getAll", MediaListItem.class).getResultList();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
@@ -58,6 +65,9 @@ public class ListDAOImpl implements ListDAO {
 		List<MediaListItem> items = new ArrayList<>();
 		try {
 			items = query.getResultList();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
@@ -72,6 +82,9 @@ public class ListDAOImpl implements ListDAO {
 		List<MediaListItem> items = new ArrayList<>();
 		try {
 			items = query.getResultList();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
@@ -87,6 +100,9 @@ public class ListDAOImpl implements ListDAO {
 		List<MediaListItem> items = new ArrayList<>();
 		try {
 			items = query.getResultList();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
@@ -101,9 +117,13 @@ public class ListDAOImpl implements ListDAO {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		MediaListItem result = null;
 		try {
+			logger.debug("Saving item: " + item.toString());
 			em.getTransaction().begin();
 			result = em.merge(item);
 			em.getTransaction().commit();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
@@ -123,6 +143,9 @@ public class ListDAOImpl implements ListDAO {
 				result.add(em.merge(item));
 			}
 			em.getTransaction().commit();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
@@ -139,14 +162,19 @@ public class ListDAOImpl implements ListDAO {
 		query.setParameter("name", originalName);
 		List<MediaListItem> items = null;
 		try {
+			logger.debug("Searching by originalName: " + originalName);
 			items = query.getResultList();
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+			throw ex;
 		} finally {
 			em.close();
 		}
+		MediaListItem result = null;
 		if ((items != null) && !items.isEmpty()) {
-			return items.get(0);
-		} else {
-			return null;
+			result = items.get(0);
 		}
+		logger.debug("Found: " + result);
+		return result;
 	}
 }

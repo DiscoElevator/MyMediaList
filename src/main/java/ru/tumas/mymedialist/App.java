@@ -18,11 +18,15 @@ package ru.tumas.mymedialist;
 
 import com.alee.laf.WebLookAndFeel;
 import javax.swing.SwingUtilities;
+import org.apache.log4j.PropertyConfigurator;
+import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 import ru.tumas.mymedialist.view.MainWindow;
 
 public class App {
 
 	public static void main(String[] args) {
+		PropertyConfigurator.configure("logger.properties");
+		ListDAOFactory.createListDAO();
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
