@@ -183,12 +183,12 @@ public class AddItemForm extends WebDialog {
 
 	private void processValidationErrors(List<ValidationError> errors) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Validation fails on fields: ");
+		sb.append("Validation failed: ");
 		for (ValidationError error : errors) {
 			sb.append(error.getFieldName());
 			sb.append(",");
 		}
-		WebOptionPane.showMessageDialog(this, sb.toString());
+		WebOptionPane.showMessageDialog(this, sb.toString(), AppSettings.getLocalizedString("addForm.error.title"), WebOptionPane.ERROR_MESSAGE);
 	}
 
 	private static String[] getCountries() {

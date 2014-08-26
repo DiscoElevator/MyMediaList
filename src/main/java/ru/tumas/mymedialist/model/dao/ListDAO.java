@@ -31,6 +31,8 @@ public interface ListDAO {
 
 	List<MediaListItem> get(MediaType type, MediaStatus status);
 
+	MediaListItem get(String originalName);
+
 	MediaListItem saveItem(MediaListItem item);
 
 	List<MediaListItem> saveItems(List<MediaListItem> items);

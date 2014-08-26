@@ -19,6 +19,8 @@ package ru.tumas.mymedialist.util.validation;
 import java.util.ArrayList;
 import java.util.List;
 import ru.tumas.mymedialist.model.MediaListItem;
+import ru.tumas.mymedialist.model.dao.ListDAO;
+import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 
 /**
  *
@@ -36,6 +38,11 @@ public final class ValidationUtils {
 		}
 		if ((item.getOriginalName() == null) || item.getOriginalName().isEmpty()) {
 			errors.add(new ValidationError("originalName"));
+		} else {
+			ListDAO dao = ListDAOFactory.createListDAO();
+			if (dao.get(item.getOriginalName()) != null) {
+				errors.add(new ValidationError("Item already exists"));
+			}
 		}
 		if (item.getProgress() > item.getEpisodes()) {
 			errors.add(new ValidationError("progress"));

@@ -37,7 +37,8 @@ import javax.persistence.TemporalType;
 	@NamedQuery(name = "MediaListItem.getByStatus", query = "SELECT i FROM MediaListItem i WHERE i.status = :status"),
 	@NamedQuery(name = "MediaListItem.getByType", query = "SELECT i FROM MediaListItem i WHERE i.type = :type"),
 	@NamedQuery(name = "MediaListItem.getByTypeAndStatus", query = "SELECT i FROM MediaListItem i WHERE i.type = :type"
-			+ " AND i.status = :status")
+			+ " AND i.status = :status"),
+	@NamedQuery(name = "MediaListItem.getByOriginalName", query = "SELECT i FROM MediaListItem i WHERE i.originalName = :name")
 })
 public class MediaListItem implements Serializable {
 
@@ -45,7 +46,6 @@ public class MediaListItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 
-	@Column(unique=true)
 	private String originalName;
 	private String localizedName;
 	private String country;

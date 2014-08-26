@@ -104,4 +104,21 @@ public class ListDAOImpl implements ListDAO {
 		em.close();
 		return result;
 	}
+
+	@Override
+	public MediaListItem get(String originalName) {
+		if ((originalName == null) || (originalName.isEmpty())) {
+			return null;
+		}
+		EntityManager em = entityManagerFactory.createEntityManager();
+		TypedQuery<MediaListItem> query = em.createNamedQuery("MediaListItem.getByOriginalName", MediaListItem.class);
+		query.setParameter("name", originalName);
+		List<MediaListItem> items = query.getResultList();
+		em.close();
+		if (!items.isEmpty()) {
+			return items.get(0);
+		} else {
+			return null;
+		}
+	}
 }
