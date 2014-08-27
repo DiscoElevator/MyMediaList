@@ -81,4 +81,11 @@ public class MediaTableModel extends AbstractTableModel {
 		TableColumnMeta meta = columnMeta.get(columnIndex);
 		return (meta != null) ? meta.getClass() : String.class;
 	}
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return (columnIndex == 3);
+	}
+	
+	
 }

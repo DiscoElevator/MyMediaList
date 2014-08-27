@@ -31,7 +31,7 @@ public class App {
 	public static void main(String[] args) {
 		PropertyConfigurator.configure("logger.properties");
 		logger.info("Application startup");
-		ListDAOFactory.createListDAO();
+		ListDAOFactory.createListDAO(); // preload EntityManagerFactory
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
