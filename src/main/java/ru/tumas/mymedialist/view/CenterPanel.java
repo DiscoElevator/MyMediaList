@@ -64,6 +64,8 @@ public class CenterPanel extends WebSplitPane {
 	}
 
 	public void createRightPanel(List<MediaListItem> items) {
-		this.setRightComponent(new WebScrollPane(new MediaListPanel(items)));
+		WebScrollPane scrollPane = new WebScrollPane(new MediaListPanel(items));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(5); // TODO config
+		this.setRightComponent(scrollPane);
 	}
 }

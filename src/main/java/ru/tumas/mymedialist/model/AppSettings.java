@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class AppSettings {
 
 	private static final Logger logger = Logger.getLogger(AppSettings.class.getName());
-	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("META-INF/Bundle", Locale.getDefault());
+	private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("META-INF/Bundle", Locale.getDefault()); // TODO config to override default locale (cfg_locale -> default_locale)
 
 	public static String getLocalizedString(String key) {
 		String result = "???" + key + "???";

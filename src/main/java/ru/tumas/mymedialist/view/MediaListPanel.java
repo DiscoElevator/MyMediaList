@@ -20,6 +20,8 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 import java.awt.BorderLayout;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.List;
 import javax.swing.JTable;
 import ru.tumas.mymedialist.model.MediaListItem;
@@ -51,10 +53,24 @@ public class MediaListPanel extends GroupPanel {
 	}
 
 	private WebTable createTable(List<MediaListItem> items) {
-		WebTable table = new WebTable();
+		final WebTable table = new WebTable();
 		table.setModel(new MediaTableModel(items));
 //		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		
+		// making scroll happen when mouse pointer is inside the table
+		final MediaListPanel self = this;
+		table.addMouseWheelListener(new MouseWheelListener() {
+
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				WebScrollPane parent = (WebScrollPane) self.getParent().getParent();
+				if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+					int totalScrollAmount = e.getUnitsToScroll() * parent.getVerticalScrollBar().getUnitIncrement();
+					parent.getVerticalScrollBar().setValue(parent.getVerticalScrollBar().getValue() + totalScrollAmount);
+				}
+			}
+		});
 		return table;
 	}
 
