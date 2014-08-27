@@ -39,6 +39,7 @@ public class App {
 				// Install WebLaF as application L&F
 				WebLookAndFeel.install();
 
+				WebLookAndFeel.setDecorateAllWindows(true);
 				MainWindow window = new MainWindow();
 				window.setVisible(true);
 				logger.info("Application started");

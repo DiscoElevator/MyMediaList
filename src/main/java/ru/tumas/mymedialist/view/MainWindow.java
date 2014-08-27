@@ -76,13 +76,10 @@ public class MainWindow extends WebFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean decorateDialogs = WebLookAndFeel.isDecorateDialogs();
-				WebLookAndFeel.setDecorateDialogs(true);
 				AddItemForm addItemForm = new AddItemForm();
 				addItemForm.pack();
 				addItemForm.setLocationRelativeTo(thisWindow);
 				addItemForm.setVisible(true);
-				WebLookAndFeel.setDecorateDialogs(decorateDialogs);
 			}
 		});
 		result.add(button);
