@@ -24,23 +24,18 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventObject;
-import java.util.HashSet;
-import java.util.Set;
+import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
 /**
  *
  * @author Maxim_Tumas
  */
-public class ProgressCellEditor implements TableCellEditor {
-
-	private final Set<CellEditorListener> listeners = new HashSet<>();
+public class ProgressCellEditor extends AbstractCellEditor implements TableCellEditor {
 
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, final int row, final int column) {
 		WebPanel panel = new WebPanel();
 		WebButton button = new WebButton("+");
 		button.setPreferredSize(new Dimension(30, 10));
@@ -48,10 +43,30 @@ public class ProgressCellEditor implements TableCellEditor {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("tralala");
+				String[] vals = ((String) value).split("/");
+				int progress = Integer.valueOf(vals[0]);
+				int episodes = Integer.valueOf(vals[1]);
+				if (progress + 1 <= episodes) {
+					progress++;
+					table.setValueAt(progress, row, column);
+					fireEditingStopped();
+				}
 			}
 		});
 		WebButton decButton = new WebButton("-");
+		decButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] vals = ((String) value).split("/");
+				int progress = Integer.valueOf(vals[0]);
+				if (progress - 1 >= 0) {
+					progress--;
+					table.setValueAt(progress, row, column);
+					fireEditingStopped();
+				}
+			}
+		});
 		decButton.setPreferredSize(new Dimension(30, 10));
 		panel.setLayout(new BorderLayout());
 		panel.add(button, BorderLayout.WEST);
@@ -68,35 +83,5 @@ public class ProgressCellEditor implements TableCellEditor {
 	@Override
 	public Object getCellEditorValue() {
 		return null;
-	}
-
-	@Override
-	public boolean isCellEditable(EventObject anEvent) {
-		return true;
-	}
-
-	@Override
-	public boolean shouldSelectCell(EventObject anEvent) {
-		return true;
-	}
-
-	@Override
-	public boolean stopCellEditing() {
-		return true;
-	}
-
-	@Override
-	public void cancelCellEditing() {
-
-	}
-
-	@Override
-	public void addCellEditorListener(CellEditorListener l) {
-		listeners.add(l);
-	}
-
-	@Override
-	public void removeCellEditorListener(CellEditorListener l) {
-		listeners.remove(l);
 	}
 }

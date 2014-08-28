@@ -21,6 +21,9 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
+import ru.tumas.mymedialist.model.MediaStatus;
+import ru.tumas.mymedialist.model.dao.ListDAO;
+import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 
 /**
  *
@@ -71,6 +74,17 @@ public class MediaTableModel extends AbstractTableModel {
 	}
 
 	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		MediaListItem item = items.get(rowIndex);
+		if ((columnIndex == 3) && (aValue != null)) {
+			item.setProgress((int) aValue);
+			ListDAO dao = ListDAOFactory.createListDAO();
+			items.remove(rowIndex);
+			items.add(rowIndex, dao.saveItem(item));
+		}
+	}
+
+	@Override
 	public String getColumnName(int column) {
 		TableColumnMeta meta = columnMeta.get(column);
 		return AppSettings.getLocalizedString((meta != null) ? meta.getKey() : "col" + column);
@@ -84,8 +98,6 @@ public class MediaTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return (columnIndex == 3);
+		return (MediaStatus.WATCHING.equals(items.get(rowIndex).getStatus()) && (columnIndex == 3));
 	}
-	
-	
 }

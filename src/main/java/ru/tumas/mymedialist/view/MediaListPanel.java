@@ -17,26 +17,14 @@
 package ru.tumas.mymedialist.view;
 
 import com.alee.extended.panel.GroupPanel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.label.WebLabel;
-import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.EventObject;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumn;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.view.table.ProgressCellEditor;
@@ -73,8 +61,9 @@ public class MediaListPanel extends GroupPanel {
 		table.setModel(new MediaTableModel(items));
 //		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		// making scroll happen when mouse pointer is inside the table
+		/* making scroll happen when mouse pointer is inside the table */
 		final MediaListPanel self = this;
 		table.addMouseWheelListener(new MouseWheelListener() {
 

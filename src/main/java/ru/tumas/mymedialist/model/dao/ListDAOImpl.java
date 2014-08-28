@@ -17,8 +17,6 @@
 package ru.tumas.mymedialist.model.dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -47,14 +45,16 @@ public class ListDAOImpl implements ListDAO {
 		EntityManager em = entityManagerFactory.createEntityManager();
 		List<MediaListItem> items = new ArrayList<>();
 		try {
+			logger.debug("Search all...");
 			items = em.createNamedQuery("MediaListItem.getAll", MediaListItem.class).getResultList();
+			logger.debug("Found " + items.size() + " items");
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			throw ex;
 		} finally {
 			em.close();
 		}
-		return Collections.unmodifiableList(items);
+		return items;
 	}
 
 	@Override
@@ -64,14 +64,16 @@ public class ListDAOImpl implements ListDAO {
 		query.setParameter("status", status);
 		List<MediaListItem> items = new ArrayList<>();
 		try {
+			logger.debug("Searching by status: " + status.toString());
 			items = query.getResultList();
+			logger.debug("Found " + items.size() + " items");
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			throw ex;
 		} finally {
 			em.close();
 		}
-		return Collections.unmodifiableList(items);
+		return items;
 	}
 
 	@Override
@@ -81,14 +83,16 @@ public class ListDAOImpl implements ListDAO {
 		query.setParameter("type", type);
 		List<MediaListItem> items = new ArrayList<>();
 		try {
+			logger.debug("Searching by type: " + type.toString());
 			items = query.getResultList();
+			logger.debug("Found " + items.size() + " items");
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			throw ex;
 		} finally {
 			em.close();
 		}
-		return Collections.unmodifiableList(items);
+		return items;
 	}
 
 	@Override
@@ -99,14 +103,16 @@ public class ListDAOImpl implements ListDAO {
 		query.setParameter("status", status);
 		List<MediaListItem> items = new ArrayList<>();
 		try {
+			logger.debug("Searching by type and status: " + type.toString() + ", " + status.toString());
 			items = query.getResultList();
+			logger.debug("Found " + items.size() + " items");
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 			throw ex;
 		} finally {
 			em.close();
 		}
-		return Collections.unmodifiableList(items);
+		return items;
 	}
 
 	@Override
@@ -135,7 +141,7 @@ public class ListDAOImpl implements ListDAO {
 		if ((items == null) || items.isEmpty()) {
 			return null;
 		}
-		List<MediaListItem> result = new LinkedList<>();
+		List<MediaListItem> result = new ArrayList<>();
 		EntityManager em = entityManagerFactory.createEntityManager();
 		try {
 			em.getTransaction().begin();
@@ -174,7 +180,7 @@ public class ListDAOImpl implements ListDAO {
 		if ((items != null) && !items.isEmpty()) {
 			result = items.get(0);
 		}
-		logger.debug("Found: " + result);
+		logger.debug("Found " + items.size() + "result: " + result);
 		return result;
 	}
 }

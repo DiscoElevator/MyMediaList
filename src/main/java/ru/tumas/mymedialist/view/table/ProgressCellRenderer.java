@@ -34,10 +34,12 @@ import javax.swing.table.TableCellRenderer;
 public class ProgressCellRenderer extends WebPanel implements TableCellRenderer {
 
 	private final WebLabel label;
+	private final WebButton incButton;
+	private final WebButton decButton;
 
 	public ProgressCellRenderer() {
 		label = new WebLabel();
-		WebButton incButton = new WebButton("+");
+		incButton = new WebButton("+");
 		incButton.setPreferredSize(new Dimension(30, 10));
 		incButton.addActionListener(new ActionListener() {
 
@@ -46,7 +48,7 @@ public class ProgressCellRenderer extends WebPanel implements TableCellRenderer 
 				System.out.println("tralala");
 			}
 		});
-		WebButton decButton = new WebButton("-");
+		decButton = new WebButton("-");
 		decButton.setPreferredSize(new Dimension(30, 10));
 		setLayout(new BorderLayout());
 		add(incButton, BorderLayout.WEST);
@@ -56,6 +58,13 @@ public class ProgressCellRenderer extends WebPanel implements TableCellRenderer 
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		if (table.isCellEditable(row, column)) {
+			incButton.setVisible(true);
+			decButton.setVisible(true);
+		} else {
+			incButton.setVisible(false);
+			decButton.setVisible(false);
+		}
 		label.setText((String) value);
 		if (isSelected) {
 			setBackground(table.getSelectionBackground());
