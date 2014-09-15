@@ -36,18 +36,25 @@ import ru.tumas.mymedialist.view.table.ProgressCellRenderer;
  */
 public class MediaListPanel extends GroupPanel {
 
+	private WebTable mediaTable;
+
 	public MediaListPanel() {
 		super();
 		this.setLayout(new BorderLayout());
-		this.add(new WebScrollPane(createTable()), BorderLayout.NORTH);
+		mediaTable = createTable();
 	}
 
 	public MediaListPanel(List<MediaListItem> items) {
 		super();
 		this.setLayout(new BorderLayout());
 		if ((items != null) && !items.isEmpty()) {
-			this.add(new WebScrollPane(createTable(items)), BorderLayout.NORTH);
+			mediaTable = createTable(items);
+			this.add(new WebScrollPane(mediaTable), BorderLayout.NORTH);
 		}
+	}
+
+	public WebTable getMediaTable() {
+		return mediaTable;
 	}
 
 	private WebTable createTable() {
@@ -84,4 +91,12 @@ public class MediaListPanel extends GroupPanel {
 		return table;
 	}
 
+	public MediaListItem getSelectedItem() {
+		MediaListItem result = null;
+		if ((mediaTable != null) && (mediaTable.getSelectedRow() != -1)) {
+			MediaTableModel tableModel = (MediaTableModel) mediaTable.getModel();
+			result = tableModel.getItem(mediaTable.getSelectedRow());
+		}
+		return result;
+	}
 }

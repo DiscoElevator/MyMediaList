@@ -36,4 +36,6 @@ public interface ListDAO {
 	MediaListItem saveItem(MediaListItem item);
 
 	List<MediaListItem> saveItems(List<MediaListItem> items);
+
+	void remove(String originalName);
 }

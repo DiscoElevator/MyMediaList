@@ -32,12 +32,19 @@ import ru.tumas.mymedialist.model.MediaType;
  */
 public class CenterPanel extends WebSplitPane {
 
+	private MediaListPanel mediaListPanel;
+
 	public CenterPanel() {
 		super(HORIZONTAL_SPLIT);
 		WebScrollPane leftScrollPane = new WebScrollPane(createTree());
-		WebScrollPane rightScrollPane = new WebScrollPane(new MediaListPanel());
+		mediaListPanel = new MediaListPanel();
+		WebScrollPane rightScrollPane = new WebScrollPane(mediaListPanel);
 		this.setLeftComponent(leftScrollPane);
 		this.setRightComponent(rightScrollPane);
+	}
+
+	public MediaListPanel getMediaListPanel() {
+		return mediaListPanel;
 	}
 
 	private WebTree createTree() {
@@ -64,7 +71,8 @@ public class CenterPanel extends WebSplitPane {
 	}
 
 	public void createRightPanel(List<MediaListItem> items) {
-		WebScrollPane scrollPane = new WebScrollPane(new MediaListPanel(items));
+		mediaListPanel = new MediaListPanel(items);
+		WebScrollPane scrollPane = new WebScrollPane(mediaListPanel);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(5); // TODO config
 		this.setRightComponent(scrollPane);
 	}

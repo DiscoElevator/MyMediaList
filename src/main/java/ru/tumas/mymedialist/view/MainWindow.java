@@ -19,7 +19,6 @@ package ru.tumas.mymedialist.view;
 import ru.tumas.mymedialist.view.forms.AddItemForm;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.statusbar.WebStatusBar;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenu;
@@ -33,11 +32,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.WindowConstants;
 import ru.tumas.mymedialist.model.AppSettings;
+import ru.tumas.mymedialist.model.MediaListItem;
+import ru.tumas.mymedialist.model.dao.ListDAO;
+import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 
 public class MainWindow extends WebFrame {
 
 	private static final int MIN_WIDTH = 800;
 	private static final int MIN_HEIGHT = 500;
+	
+	private CenterPanel centerPanel;
 
 	public MainWindow() {
 		super();
@@ -46,7 +50,8 @@ public class MainWindow extends WebFrame {
 		this.setSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		this.setLayout(new BorderLayout());
 		this.getContentPane().add(new GroupPanel(false, createMenu(), createToolbar()), BorderLayout.NORTH);
-		this.getContentPane().add(new CenterPanel(), BorderLayout.CENTER);
+		centerPanel = new CenterPanel();
+		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
 		this.getContentPane().add(createStatusBar(), BorderLayout.SOUTH);
 	}
 
@@ -69,7 +74,7 @@ public class MainWindow extends WebFrame {
 	private WebToolBar createToolbar() {
 		WebToolBar result = new WebToolBar(WebToolBar.HORIZONTAL);
 		result.setFloatable(false);
-		WebButton button = new WebButton("Add");
+		WebButton button = new WebButton("Add"); // TODO icon
 		button.setDrawFocus(false);
 		final MainWindow thisWindow = this;
 		button.addActionListener(new ActionListener() {
@@ -83,6 +88,22 @@ public class MainWindow extends WebFrame {
 			}
 		});
 		result.add(button);
+		WebButton removeButton = new WebButton("X"); // TODO icon
+		removeButton.setDrawFocus(false);
+		removeButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MediaListPanel mediaListPanel = thisWindow.centerPanel.getMediaListPanel();
+				MediaListItem item = mediaListPanel.getSelectedItem();
+				if (item != null) {
+					// TODO confirmation
+					ListDAO dao = ListDAOFactory.createListDAO();
+					dao.remove(item.getOriginalName());
+				}
+			}
+		});
+		result.add(removeButton);
 		return result;
 	}
 }

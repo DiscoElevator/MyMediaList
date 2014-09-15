@@ -180,7 +180,23 @@ public class ListDAOImpl implements ListDAO {
 		if ((items != null) && !items.isEmpty()) {
 			result = items.get(0);
 		}
-		logger.debug("Found " + items.size() + "result: " + result);
+		logger.debug("Found " + items.size() + " result: " + result);
 		return result;
+	}
+
+	@Override
+	public void remove(String originalName) {
+		if ((originalName == null) || (originalName.isEmpty())) {
+			return;
+		}
+		EntityManager em = entityManagerFactory.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			MediaListItem item = em.find(MediaListItem.class, get(originalName).getId());
+			em.remove(item);
+			em.getTransaction().commit();
+		} finally {
+			em.close();
+		}
 	}
 }

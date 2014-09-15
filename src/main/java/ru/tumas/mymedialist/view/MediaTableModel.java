@@ -46,6 +46,10 @@ public class MediaTableModel extends AbstractTableModel {
 		this.items = items;
 	}
 
+	public MediaListItem getItem(int rowIndex) {
+		return items.get(rowIndex);
+	}
+
 	@Override
 	public int getRowCount() {
 		return items.size();
