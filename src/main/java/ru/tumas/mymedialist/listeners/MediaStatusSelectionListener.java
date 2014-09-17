@@ -18,6 +18,7 @@ package ru.tumas.mymedialist.listeners;
 
 import com.alee.laf.optionpane.WebOptionPane;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -25,6 +26,7 @@ import ru.tumas.mymedialist.model.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
+import ru.tumas.mymedialist.util.UIBlockingWorker;
 import ru.tumas.mymedialist.view.CenterPanel;
 import ru.tumas.mymedialist.view.MediaStatusTreeNode;
 import ru.tumas.mymedialist.view.MediaTypeTreeNode;
@@ -48,19 +50,34 @@ public class MediaStatusSelectionListener implements TreeSelectionListener {
 			MediaTypeTreeNode typeNode = (MediaTypeTreeNode) path.getLastPathComponent();
 			System.out.println("selected: " + typeNode.getMediaType());
 		} else if (path.getLastPathComponent() instanceof MediaStatusTreeNode) {
-			MediaStatusTreeNode statusNode = (MediaStatusTreeNode) path.getLastPathComponent();
+			final MediaStatusTreeNode statusNode = (MediaStatusTreeNode) path.getLastPathComponent();
 			System.out.println("selected: " + statusNode.getMediaStatus() + " -> " + statusNode.getMediaType());
-			ListDAO dao = ListDAOFactory.createListDAO();
-			List<MediaListItem> items = null;
-			try {
-				items = dao.get(statusNode.getMediaType(), statusNode.getMediaStatus());
-			} catch (Exception ex) {
-				WebOptionPane.showMessageDialog(centerPanel, AppSettings.getLocalizedString("error.message.cannotGetItems"),
-						AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
-			}
-			if (items != null) {
-				centerPanel.createRightPanel(items);
-			}
+
+			UIBlockingWorker<List<MediaListItem>, Void> worker = new UIBlockingWorker<List<MediaListItem>, Void>(centerPanel) {
+
+				@Override
+				protected List<MediaListItem> doInBackground() throws Exception {
+					blockUI();
+					ListDAO dao = ListDAOFactory.createListDAO();
+					List<MediaListItem> items = dao.get(statusNode.getMediaType(), statusNode.getMediaStatus());
+					return items;
+				}
+
+				@Override
+				protected void done() {
+					unblockUI();
+					try {
+						List<MediaListItem> items = get();
+						centerPanel.createRightPanel(!items.isEmpty() ? items : null);
+					} catch (InterruptedException ex) {
+						// do nothing
+					} catch (ExecutionException ex) {
+						WebOptionPane.showMessageDialog(centerPanel, AppSettings.getLocalizedString("error.message.cannotGetItems"),
+								AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
+					}
+				}
+			};
+			worker.execute();
 		}
 	}
 }

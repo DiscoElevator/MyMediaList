@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import javax.swing.SpinnerNumberModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;
 import ru.tumas.mymedialist.listeners.MaxEpisodesChangeListener;
 import ru.tumas.mymedialist.listeners.StatusChangeListener;
-import ru.tumas.mymedialist.util.UIUtils;
+import ru.tumas.mymedialist.util.UIBlockingWorker;
 import ru.tumas.mymedialist.util.validation.ValidationError;
 import ru.tumas.mymedialist.util.validation.ValidationUtils;
 
@@ -160,24 +161,37 @@ public class AddItemForm extends WebDialog {
 				item.setStartDate(startDate.getDate());
 				item.setEndDate(endDate.getDate());
 				logger.debug("Validating item: " + item.toString());
-				List<ValidationError> errors = ValidationUtils.validateItem(item);
-				if (!errors.isEmpty()) {
-					processValidationErrors(errors);
-				} else {
-					UIUtils.runBlockingTask(dialog, new Runnable() {
 
-						@Override
-						public void run() {
+				UIBlockingWorker<List<ValidationError>, Void> worker = new UIBlockingWorker<List<ValidationError>, Void>(dialog) {
+
+					@Override
+					protected List<ValidationError> doInBackground() throws Exception {
+						blockUI();
+						List<ValidationError> errors = ValidationUtils.validateItem(item);
+						if (errors.isEmpty()) {
 							ListDAO dao = ListDAOFactory.createListDAO();
-							try {
-								dao.saveItem(item);
-							} catch (Exception ex) {
-								WebOptionPane.showMessageDialog(dialog, AppSettings.getLocalizedString("error.addForm.cannotSave"),
-										AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
-							}
+							dao.saveItem(item);
 						}
-					});
-				}
+						return errors;
+					}
+
+					@Override
+					protected void done() {
+						unblockUI();
+						try {
+							List<ValidationError> errors = get();
+							if (!errors.isEmpty()) {
+								processValidationErrors(errors);
+							}
+						} catch (InterruptedException ex) {
+							// do nothing
+						} catch (ExecutionException ex) {
+							WebOptionPane.showMessageDialog(dialog, AppSettings.getLocalizedString("error.addForm.cannotSave"),
+									AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
+						}
+					}
+				};
+				worker.execute();
 			}
 		});
 		return addButton;

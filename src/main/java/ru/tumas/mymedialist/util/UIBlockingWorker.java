@@ -16,27 +16,23 @@
  */
 package ru.tumas.mymedialist.util;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.rootpane.WebDialog;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import ru.tumas.mymedialist.model.AppSettings;
 
 /**
  *
  * @author Maxim_Tumas
  */
-public final class UIUtils {
+public abstract class UIBlockingWorker<T, V> extends SwingWorker<T, V> {
 
-	private UIUtils() {
-	}
+	private final WebDialog dialog = new WebDialog();
 
-	public static void runBlockingTask(Component owner, final Runnable runnable) {
-		final boolean decorateDialogs = WebLookAndFeel.isDecorateDialogs();
-		WebLookAndFeel.setDecorateDialogs(true);
-		final WebDialog dialog = new WebDialog();
+	public UIBlockingWorker(Component owner) {
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(owner);
 		dialog.setMinimumSize(new Dimension(300, 80));
@@ -48,21 +44,28 @@ public final class UIUtils {
 		progressBar.setStringPainted(true);
 		progressBar.setString(AppSettings.getLocalizedString("progressbar.text"));
 		dialog.add(progressBar);
+	}
+
+	protected void blockUI() {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						runnable.run();
-						dialog.setVisible(false);
-					}
-				}).start();
+				dialog.setVisible(true);
 			}
 		});
-		dialog.setVisible(true);
-		WebLookAndFeel.setDecorateDialogs(decorateDialogs);
 	}
+
+	protected void unblockUI() {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				dialog.setVisible(false);
+			}
+		});
+	}
+
+	@Override
+	protected abstract T doInBackground() throws Exception;
 }

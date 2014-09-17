@@ -30,7 +30,7 @@ public class App {
 
 	public static void main(String[] args) {
 		PropertyConfigurator.configure("logger.properties");
-		logger.info("Application startup");
+		logger.debug("Application startup");
 		ListDAOFactory.createListDAO(); // preload EntityManagerFactory
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -42,7 +42,7 @@ public class App {
 				WebLookAndFeel.setDecorateAllWindows(true);
 				MainWindow window = new MainWindow();
 				window.setVisible(true);
-				logger.info("Application started");
+				logger.debug("Application started");
 			}
 		});
 	}
