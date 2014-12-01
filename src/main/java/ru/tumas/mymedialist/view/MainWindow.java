@@ -26,6 +26,8 @@ import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -75,6 +77,7 @@ public class MainWindow extends WebFrame {
 		WebToolBar result = new WebToolBar(WebToolBar.HORIZONTAL);
 		result.setFloatable(false);
 		WebButton button = new WebButton("Add"); // TODO icon
+		TooltipManager.setTooltip(button, AppSettings.getLocalizedString("toolbar.addButton.tooltip"), TooltipWay.down);
 		button.setDrawFocus(false);
 		final MainWindow thisWindow = this;
 		button.addActionListener(new ActionListener() {
@@ -89,6 +92,7 @@ public class MainWindow extends WebFrame {
 		});
 		result.add(button);
 		WebButton removeButton = new WebButton("X"); // TODO icon
+		TooltipManager.setTooltip(removeButton, AppSettings.getLocalizedString("toolbar.removeButton.tooltip"), TooltipWay.down);
 		removeButton.setDrawFocus(false);
 		removeButton.addActionListener(new ActionListener() {
 
