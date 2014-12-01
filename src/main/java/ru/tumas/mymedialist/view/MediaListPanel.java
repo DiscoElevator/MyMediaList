@@ -20,11 +20,14 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.table.WebTable;
 import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.view.table.ProgressCellEditor;
@@ -80,6 +83,16 @@ public class MediaListPanel extends GroupPanel {
 				if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
 					int totalScrollAmount = e.getUnitsToScroll() * parent.getVerticalScrollBar().getUnitIncrement();
 					parent.getVerticalScrollBar().setValue(parent.getVerticalScrollBar().getValue() + totalScrollAmount);
+				}
+			}
+		});
+
+		table.addMouseListener(new MouseInputAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					System.out.println("doubleclick");
 				}
 			}
 		});

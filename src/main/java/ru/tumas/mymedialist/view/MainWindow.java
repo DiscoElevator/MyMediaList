@@ -16,7 +16,7 @@
  */
 package ru.tumas.mymedialist.view;
 
-import ru.tumas.mymedialist.view.forms.AddItemForm;
+import ru.tumas.mymedialist.view.forms.EditItemForm;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.laf.button.WebButton;
@@ -81,7 +81,7 @@ public class MainWindow extends WebFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AddItemForm addItemForm = new AddItemForm();
+				EditItemForm addItemForm = new EditItemForm();
 				addItemForm.pack();
 				addItemForm.setLocationRelativeTo(thisWindow);
 				addItemForm.setVisible(true);

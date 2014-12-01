@@ -31,14 +31,14 @@ public final class ValidationUtils {
 	private ValidationUtils() {
 	}
 
-	public static List<ValidationError> validateItem(MediaListItem item) {
+	public static List<ValidationError> validateItem(MediaListItem item, boolean checkUnique) {
 		List<ValidationError> errors = new ArrayList<>();
 		if (item == null) {
 			return null;
 		}
 		if ((item.getOriginalName() == null) || item.getOriginalName().isEmpty()) {
 			errors.add(new ValidationError("originalName"));
-		} else {
+		} else if (checkUnique == true) {
 			ListDAO dao = ListDAOFactory.createListDAO();
 			if (dao.get(item.getOriginalName()) != null) {
 				errors.add(new ValidationError("Item already exists"));

@@ -24,8 +24,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -36,7 +39,7 @@ public class ProgressCellEditor extends AbstractCellEditor implements TableCellE
 
 	@Override
 	public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, final int row, final int column) {
-		WebPanel panel = new WebPanel();
+		final WebPanel panel = new WebPanel();
 		WebButton button = new WebButton("+");
 		button.setPreferredSize(new Dimension(30, 10));
 		button.addActionListener(new ActionListener() {
@@ -77,6 +80,15 @@ public class ProgressCellEditor extends AbstractCellEditor implements TableCellE
 		} else {
 			panel.setBackground(table.getBackground());
 		}
+		panel.addMouseListener(new MouseInputAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					System.out.println("doubleclick 1");
+				}
+			}
+		});
 		return panel;
 	}
 

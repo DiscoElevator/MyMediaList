@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,9 +56,9 @@ import ru.tumas.mymedialist.util.validation.ValidationUtils;
  *
  * @author Maxim Tumas
  */
-public class AddItemForm extends WebDialog {
+public class EditItemForm extends WebDialog {
 
-	private static final Logger logger = LoggerFactory.getLogger(AddItemForm.class);
+	private static final Logger logger = LoggerFactory.getLogger(EditItemForm.class);
 
 	private final WebTextField originalNameTextField;
 	private final WebTextField localizedNameTextField;
@@ -68,8 +69,9 @@ public class AddItemForm extends WebDialog {
 	private final WebSpinner episodesWatched;
 	private final WebDateField startDate;
 	private final WebDateField endDate;
+	private boolean editMode;
 
-	public AddItemForm() {
+	public EditItemForm() {
 		super();
 		originalNameTextField = new WebTextField();
 //		originalNameTextField.setMinimumWidth(100);
@@ -95,17 +97,17 @@ public class AddItemForm extends WebDialog {
 		WebPanel panel = new WebPanel();
 		panel.setLayout(createLayout());
 		panel.setMargin(5, 5, 5, 5);
-		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.originalName")), "0,0");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("editForm.fields.originalName")), "0,0");
 		panel.add(originalNameTextField, "1,0,3,0");
-		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.localizedName")), "0,1");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("editForm.fields.localizedName")), "0,1");
 		panel.add(localizedNameTextField, "1,1,3,1");
-		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.country")), "0,2");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("editForm.fields.country")), "0,2");
 		panel.add(countryComboBox, "1,2,3,2");
-		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.type")), "0,3");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("editForm.fields.type")), "0,3");
 		panel.add(typeComboBox, "1,3,3,3");
-		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.status")), "0,4");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("editForm.fields.status")), "0,4");
 		panel.add(statusComboBox, "1,4,3,4");
-		panel.add(new WebLabel(AppSettings.getLocalizedString("addForm.fields.progress")), "0,5");
+		panel.add(new WebLabel(AppSettings.getLocalizedString("editForm.fields.progress")), "0,5");
 		panel.add(episodesWatched, "1,5");
 		panel.add(new WebLabel("/"), "2,5");
 		panel.add(maxEpisodes, "3,5");
@@ -126,8 +128,22 @@ public class AddItemForm extends WebDialog {
 //		panel.add(new WebLabel("status"), FormLayout.LEFT);
 //		panel.add(statusComboBox, FormLayout.RIGHT);
 		add(panel, BorderLayout.NORTH);
-		add(createAddButton(), BorderLayout.SOUTH);
-		setTitle(AppSettings.getLocalizedString("addForm.title"));
+		add(createSaveButton(), BorderLayout.SOUTH);
+		setTitle(AppSettings.getLocalizedString("editForm.title"));
+	}
+	
+	public EditItemForm(MediaListItem item) {
+		this();
+		originalNameTextField.setText(item.getOriginalName());
+		localizedNameTextField.setText(item.getLocalizedName());
+		countryComboBox.setSelectedIndex(Arrays.binarySearch(getCountries(), item.getCountry()));
+		typeComboBox.setSelectedItem(item.getType());
+		statusComboBox.setSelectedItem(item.getStatus());
+		maxEpisodes.setValue(item.getEpisodes());
+		episodesWatched.setValue(item.getProgress());
+		startDate.setDate(item.getStartDate());
+		endDate.setDate(item.getEndDate());
+		editMode = true;
 	}
 
 	private TableLayout createLayout() {
@@ -142,14 +158,14 @@ public class AddItemForm extends WebDialog {
 		return layout;
 	}
 
-	private WebButton createAddButton() {
-		WebButton addButton = new WebButton("Add");
+	private WebButton createSaveButton() {
+		WebButton addButton = new WebButton("Save");
 		final WebDialog dialog = this;
 		addButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				logger.debug("Trying to add new item");
+				logger.debug("Trying to add new item or edit existing");
 				final MediaListItem item = new MediaListItem();
 				item.setOriginalName(originalNameTextField.getText());
 				item.setLocalizedName(localizedNameTextField.getText());
@@ -167,7 +183,7 @@ public class AddItemForm extends WebDialog {
 					@Override
 					protected List<ValidationError> doInBackground() throws Exception {
 						blockUI();
-						List<ValidationError> errors = ValidationUtils.validateItem(item);
+						List<ValidationError> errors = ValidationUtils.validateItem(item, !editMode);
 						if (errors.isEmpty()) {
 							ListDAO dao = ListDAOFactory.createListDAO();
 							dao.saveItem(item);
@@ -186,7 +202,7 @@ public class AddItemForm extends WebDialog {
 						} catch (InterruptedException ex) {
 							// do nothing
 						} catch (ExecutionException ex) {
-							WebOptionPane.showMessageDialog(dialog, AppSettings.getLocalizedString("error.addForm.cannotSave"),
+							WebOptionPane.showMessageDialog(dialog, AppSettings.getLocalizedString("error.editForm.cannotSave"),
 									AppSettings.getLocalizedString("error.title"), WebOptionPane.ERROR_MESSAGE);
 						}
 					}

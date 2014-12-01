@@ -180,7 +180,7 @@ public class ListDAOImpl implements ListDAO {
 		if ((items != null) && !items.isEmpty()) {
 			result = items.get(0);
 		}
-		logger.debug("Found " + items.size() + " result: " + result);
+		logger.debug("Found " + ((items != null) ? items.size() : 0) + " result: " + result);
 		return result;
 	}
 
