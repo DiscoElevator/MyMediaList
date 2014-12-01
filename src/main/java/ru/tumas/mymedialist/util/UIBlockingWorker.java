@@ -22,7 +22,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import ru.tumas.mymedialist.model.AppSettings;
+import ru.tumas.mymedialist.AppSettings;
 
 /**
  *

@@ -40,7 +40,7 @@ import javax.swing.SpinnerNumberModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.tumas.mymedialist.listeners.ClearDateActionListener;
-import ru.tumas.mymedialist.model.AppSettings;
+import ru.tumas.mymedialist.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;

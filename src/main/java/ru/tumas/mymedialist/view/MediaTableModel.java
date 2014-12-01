@@ -19,7 +19,7 @@ package ru.tumas.mymedialist.view;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import ru.tumas.mymedialist.model.AppSettings;
+import ru.tumas.mymedialist.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.dao.ListDAO;

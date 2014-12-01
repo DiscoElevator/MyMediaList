@@ -19,7 +19,7 @@ package ru.tumas.mymedialist.view;
 import java.util.EnumMap;
 import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
-import ru.tumas.mymedialist.model.AppSettings;
+import ru.tumas.mymedialist.AppSettings;
 import ru.tumas.mymedialist.model.MediaStatus;
 import ru.tumas.mymedialist.model.MediaType;
 

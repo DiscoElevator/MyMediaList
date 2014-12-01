@@ -33,7 +33,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.WindowConstants;
-import ru.tumas.mymedialist.model.AppSettings;
+import ru.tumas.mymedialist.AppSettings;
 import ru.tumas.mymedialist.model.MediaListItem;
 import ru.tumas.mymedialist.model.dao.ListDAO;
 import ru.tumas.mymedialist.model.dao.ListDAOFactory;

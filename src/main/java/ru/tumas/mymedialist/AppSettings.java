@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.tumas.mymedialist.model;
+package ru.tumas.mymedialist;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
