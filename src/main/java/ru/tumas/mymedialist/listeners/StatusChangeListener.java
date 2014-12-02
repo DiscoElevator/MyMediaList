@@ -58,6 +58,11 @@ public class StatusChangeListener implements ActionListener {
 				disableClearButtons();
 				break;
 			case WATCHING:
+				episodesWatched.setEnabled(true);
+				startDate.setEnabled(true);
+				endDate.setEnabled(false);
+				enableClearButtons(); // TODO disable endDate clear button
+				break;
 			case DROPPED:
 				episodesWatched.setEnabled(true);
 				startDate.setEnabled(true);

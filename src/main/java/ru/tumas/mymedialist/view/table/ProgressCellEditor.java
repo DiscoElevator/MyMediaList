@@ -40,6 +40,8 @@ public class ProgressCellEditor extends AbstractCellEditor implements TableCellE
 	@Override
 	public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, final int row, final int column) {
 		final WebPanel panel = new WebPanel();
+		
+		// TODO switch + and - buttons
 		WebButton button = new WebButton("+");
 		button.setPreferredSize(new Dimension(30, 10));
 		button.addActionListener(new ActionListener() {

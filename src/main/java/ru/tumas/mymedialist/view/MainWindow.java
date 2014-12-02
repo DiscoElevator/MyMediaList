@@ -101,7 +101,7 @@ public class MainWindow extends WebFrame {
 				MediaListPanel mediaListPanel = thisWindow.centerPanel.getMediaListPanel();
 				MediaListItem item = mediaListPanel.getSelectedItem();
 				if (item != null) {
-					// TODO confirmation
+					// TODO confirmation and list update
 					ListDAO dao = ListDAOFactory.createListDAO();
 					dao.remove(item.getOriginalName());
 				}

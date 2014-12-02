@@ -198,6 +198,8 @@ public class EditItemForm extends WebDialog {
 							List<ValidationError> errors = get();
 							if (!errors.isEmpty()) {
 								processValidationErrors(errors);
+							} else {
+								// TODO clear form and update list
 							}
 						} catch (InterruptedException ex) {
 							// do nothing
